@@ -101,6 +101,11 @@ void UiWindow::setChild(UiControl *control) {
 	uiWindowSetChild(win, control->getHandle());
 }
 
+// TODO: raise issue on nbind repo
+void UiWindow::removeChild() {
+	uiWindowSetChild(win, NULL);
+}
+
 void UiWindow::setTitle(const char * title) {
 	uiWindowSetTitle(win, title);
 }
@@ -144,6 +149,7 @@ NBIND_CLASS(UiWindow) {
   method(show);
   method(close);
   method(setChild);
+  method(removeChild);
   method(onClosing);
   method(onContentSizeChanged);
   getset(getMargined, setMargined);

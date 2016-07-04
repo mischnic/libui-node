@@ -16,6 +16,7 @@ struct Ui {
 	}
 
 	static void quit() {
+		uiUninit();
 		uiQuit();
 	}
 

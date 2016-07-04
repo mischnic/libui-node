@@ -108,6 +108,7 @@ class UiControl {
 	public:
 		uiControl * getHandle();
 		UiControl(uiControl *hnd);
+		~UiControl();
 		DEFINE_CONTROL_METHODS()
 };
 
@@ -430,6 +431,7 @@ class UiWindow {
 		void setMargined(int margined);
 		int getMargined();
 		void setChild(UiControl *control);
+		void removeChild();
 		void setTitle(const char * title);
 		const char * getTitle();
 		Point getPosition();
@@ -719,6 +721,7 @@ class UiArea  : public UiControl {
 };
 
 extern std::map <uiArea *, UiArea *> areasMap;
+extern std::map <uiControl *, UiControl *> controlsMap;
 
 typedef struct UiAreaHandler {
 	void (*Draw)(UiAreaHandler *self, uiArea *area, uiAreaDrawParams *params);

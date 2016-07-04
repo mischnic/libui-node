@@ -2,13 +2,29 @@
 #include "nbind/api.h"
 #include "nbind/nbind.h"
 #include "ui-node.h"
+#include <map>
+
+std::map <uiControl *, UiControl *> controlsMap;
 
 uiControl * UiControl::getHandle() {
 	return handle;
 }
 
+void onDestroy(uiControl *c) {
+	controlsMap.erase(c);
+	printf("destroy control %p\n", c);
+}
+
 UiControl::UiControl(uiControl* hnd) {
 	handle = hnd;
+	hnd->Destroy = onDestroy;
+	controlsMap[hnd] = (UiControl *) this;
+	printf("created %p\n", handle);
+}
+
+UiControl::~UiControl() {
+
+	printf("destroy c++ %p\n", handle);
 }
 
 void UiControl::destroy() {
