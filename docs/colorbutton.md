@@ -60,16 +60,14 @@ Destroy and free the control.
 
 
 
-
 ## setParent
 
 Change the parent of the control
 
 
-### Arguments
+**Arguments**
 
 * parent: UiControl - the new parent of the widget or null to detach it.
-
 
 
 
@@ -78,6 +76,19 @@ Change the parent of the control
 Return whether the control is a top level one or not.
 
 
+
+
+## setColor
+
+Set the value of property `color`
+
+**Arguments**
+
+* value: Color - The new value for `color` property.
+
+## getColor
+
+Return the value of property `color`
 
 
 

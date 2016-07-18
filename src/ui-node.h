@@ -67,7 +67,7 @@
 
 #define INHERITS_ENTRY_METHODS(CLASS) \
 	void CLASS::setText(const char *  text) { UiEntryBase::setText(text); } \
-	const char *  CLASS::getText() { return UiEntryBase::getText(); } \
+	const char * CLASS::getText() { return UiEntryBase::getText(); } \
 	void CLASS::setReadOnly(bool readOnly) { UiEntryBase::setReadOnly(readOnly); }\
 	bool CLASS::getReadOnly() { return UiEntryBase::getReadOnly(); } \
 	void CLASS::onChanged(nbind::cbFunction & cb) { UiEntryBase::onChanged(cb); }
@@ -81,18 +81,17 @@
 	method(getReadOnly); \
 	method(setReadOnly);
 
-// TODO - padded should be bool
 #define DEFINE_BOX_METHODS() \
-	void append(UiControl *control, int stretchy); \
+	void append(UiControl *control, bool stretchy); \
 	void deleteAt(int index); \
-	int getPadded(); \
-	void setPadded(int padded);
+	bool getPadded(); \
+	void setPadded(bool padded);
 
 #define INHERITS_BOX_METHODS(CLASS) \
-	void CLASS::append(UiControl *control, int stretchy) { UiBox::append(control, stretchy); } \
+	void CLASS::append(UiControl *control, bool stretchy) { UiBox::append(control, stretchy); } \
 	void CLASS::deleteAt(int index) { UiBox::deleteAt(index); } \
-	int CLASS::getPadded() { return UiBox::getPadded(); } \
-	void CLASS::setPadded(int padded) { UiBox::setPadded(padded); }
+	bool CLASS::getPadded() { return UiBox::getPadded(); } \
+	void CLASS::setPadded(bool padded) { UiBox::setPadded(padded); }
 
 #define DECLARE_BOX_METHODS() \
 	getset(getPadded, setPadded); \
@@ -128,7 +127,6 @@ class UiRadioButtons : public UiControl {
 };
 
 
-// TODO - document
 class UiTab : public UiControl {
 	public:
 		UiTab();
@@ -136,8 +134,8 @@ class UiTab : public UiControl {
 		void insertAt(const char *name, int before, UiControl *child);
 		void deleteAt(int index);
 		int numPages();
-		int getMargined(int page);
-		void setMargined(int page, int margined);
+		bool getMargined(int page);
+		void setMargined(int page, bool margined);
 
 		DEFINE_CONTROL_METHODS()
 };
@@ -264,14 +262,13 @@ class UiLabel : public UiControl {
 		const char * getText();
 };
 
-// TODO - document
 class UiGroup : public UiControl {
 	public:
 		UiGroup(const char *text);
 		UiGroup();
 		void setChild(UiControl *control);
-		int getMargined();
-		void setMargined(int margined);
+		bool getMargined();
+		void setMargined(bool margined);
 		const char * getTitle();
 		void setTitle(const char * title);
 		DEFINE_CONTROL_METHODS()
@@ -371,8 +368,10 @@ class Point {
 	public:
 		Point(const Point &other);
 		Point(int x, int y);
-		int getX(); void setX(int value);
-		int getY(); void setY(int value);
+		int getX();
+		void setX(int value);
+		int getY();
+		void setY(int value);
 		void toJS(nbind::cbOutput output);
 };
 
@@ -383,8 +382,10 @@ class Size {
 
 	public:
 		Size(int w, int h);
-		int getWidth(); void setWidth(int value);
-		int getHeight(); void setHeight(int value);
+		int getWidth();
+		void setWidth(int value);
+		int getHeight();
+		void setHeight(int value);
 		void toJS(nbind::cbOutput output);
 };
 
@@ -396,8 +397,10 @@ class PointDouble {
 	public:
 		PointDouble(double x, double y);
 		PointDouble(const PointDouble &other);
-		double getX(); void setX(double value);
-		double getY(); void setY(double value);
+		double getX();
+		void setX(double value);
+		double getY();
+		void setY(double value);
 		void toJS(nbind::cbOutput output);
 };
 
@@ -408,8 +411,10 @@ class SizeDouble {
 
 	public:
 		SizeDouble(double w, double h);
-		double getWidth(); void setWidth(double value);
-		double getHeight(); void setHeight(double value);
+		double getWidth();
+		void setWidth(double value);
+		double getHeight();
+		void setHeight(double value);
 		void toJS(nbind::cbOutput output);
 };
 
@@ -422,14 +427,12 @@ class UiWindow {
 		uiWindow *win;
 
 	public:
-		// TODO - hasMenubar should be bool
-		UiWindow(const char* title, int width, int height, int hasMenubar);
+		UiWindow(const char* title, int width, int height, bool hasMenubar);
 		uiWindow * getHandle();
 		void show();
 		void close();
-		// TODO - margined should be bool
-		void setMargined(int margined);
-		int getMargined();
+		void setMargined(bool margined);
+		bool getMargined();
 		void setChild(UiControl *control);
 		void removeChild();
 		void setTitle(const char * title);
@@ -469,8 +472,8 @@ class UiMenuItem {
 		UiMenuItem(uiMenuItem *hnd);
 		void enable();
 		void disable();
-		int getChecked();
-		void setChecked(int checked);
+		bool getChecked();
+		void setChecked(bool checked);
 };
 
 // TODO - document
@@ -500,10 +503,14 @@ class Color {
 	public:
 		Color(const Color &other);
 		Color(double r, double g, double b, double a);
-		double getR(); void setR(double value);
-		double getG(); void setG(double value);
-		double getB(); void setB(double value);
-		double getA(); void setA(double value);
+		double getR();
+		void setR(double value);
+		double getG();
+		void setG(double value);
+		double getB();
+		void setB(double value);
+		double getA();
+		void setA(double value);
 		void toJS(nbind::cbOutput output);
 };
 
@@ -516,6 +523,8 @@ class UiColorButton : public UiControl {
 		void setColor(Color value);
 		DEFINE_CONTROL_METHODS()
 };
+
+
 
 // UIArea
 
@@ -623,7 +632,7 @@ class UiAreaMouseEvent {
 		int getUp();
 		int getCount();
 		int getModifiers();
-		uint getHeld1To64();
+		unsigned int getHeld1To64();
 };
 
 
@@ -659,6 +668,76 @@ class UiDrawPath {
 
 };
 
+
+class DrawTextFontMetrics {
+	private:
+		uiDrawTextFontMetrics * m;
+
+	public:
+		DrawTextFontMetrics(uiDrawTextFontMetrics * metrics);
+		double getAscent();
+		double getDescent();
+		double getLeading();
+		double getUnderlinePos();
+		double getUnderlineThickness();
+};
+
+class DrawTextFontDescriptor {
+	private:
+		uiDrawTextFontDescriptor * d;
+
+	public:
+		DrawTextFontDescriptor(uiDrawTextFontDescriptor * descr);
+		const char *getFamily();
+		double getSize();
+		int getWeight();
+		int getItalic();
+		int getStretch();
+};
+
+
+class DrawTextFont {
+	private:
+		uiDrawTextFont * handle;
+
+	public:
+		DrawTextFont();
+		DrawTextFont (uiDrawTextFont * h);
+
+		uiDrawTextFont * getHandle();
+		void free();
+		DrawTextFontDescriptor * describe();
+		DrawTextFontMetrics * getMetrics();
+
+		static std::vector<char *> listFontFamilies();
+		void loadClosestFont(const char *family, double size, int weight, int italic, int stretch);
+};
+
+
+class UiFontButton : public UiControl {
+	DEFINE_EVENT(onChanged)
+
+	public:
+		UiFontButton();
+		DrawTextFont * getFont();
+		DEFINE_CONTROL_METHODS()
+};
+
+class DrawTextLayout {
+	private:
+		uiDrawTextLayout * handle;
+		double w;
+
+	public:
+		DrawTextLayout(const char *text, DrawTextFont *defaultFont, double width);
+		void free();
+		void setWidth(double value);
+		double getWidth();
+		SizeDouble getExtents();
+		uiDrawTextLayout * getHandle();
+		void setColor(int startChar, int endChar, Color color);
+};
+
 class UiDrawContext {
 	private:
 		uiDrawContext *c;
@@ -671,7 +750,7 @@ class UiDrawContext {
 		void clip(UiDrawPath *path);
 		void save();
 		void restore();
-		void text(double x, double y, void *layout);
+		void text(double x, double y, DrawTextLayout *layout);
 
 };
 
@@ -761,6 +840,8 @@ class UiGrid : public UiControl {
 
 		DEFINE_CONTROL_METHODS()
 };
+
+
 
 
 #endif

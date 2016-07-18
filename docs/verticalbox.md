@@ -3,7 +3,7 @@
 
 > A container that stack its chidren vertically.
 
-
+![UiVerticalBox example](media/UiVerticalBox.png)
 
 ```js
 
@@ -75,11 +75,10 @@ Defaults to false.
 Append a new child widget as last one.
 
 
-### Arguments
+**Arguments**
 
 * control: UiControl - the control to append.
 * stretchy: Boolean - whether the child should expand to use all available size.
-
 
 
 
@@ -88,10 +87,9 @@ Append a new child widget as last one.
 Remove a child widget at specified position.
 
 
-### Arguments
+**Arguments**
 
 * index: Number - the index of the control to remove.
-
 
 
 
@@ -102,16 +100,14 @@ Destroy and free the control.
 
 
 
-
 ## setParent
 
 Change the parent of the control
 
 
-### Arguments
+**Arguments**
 
 * parent: UiControl - the new parent of the widget or null to detach it.
-
 
 
 
@@ -122,12 +118,46 @@ Return whether the control is a top level one or not.
 
 
 
+## setVisible
 
----
+Set the value of property `visible`
 
-# Events
+**Arguments**
 
-See [events implementation](events.md) for generic details on how events are implemented.
+* value: Boolean - The new value for `visible` property.
+
+## getVisible
+
+Return the value of property `visible`
+
+
+
+## setEnabled
+
+Set the value of property `enabled`
+
+**Arguments**
+
+* value: Boolean - The new value for `enabled` property.
+
+## getEnabled
+
+Return the value of property `enabled`
+
+
+
+## setPadded
+
+Set the value of property `padded`
+
+**Arguments**
+
+* value: Boolean - The new value for `padded` property.
+
+## getPadded
+
+Return the value of property `padded`
+
 
 
 

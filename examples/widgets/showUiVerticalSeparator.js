@@ -1,12 +1,15 @@
 
-var libui = require('../index');
+var libui = require('../../index');
 
 libui.Ui.init();
 var win = new libui.UiWindow('UiVerticalSeparator example', 320, 60, true);
 win.margined = true;
 
-var widget = new libui.UiVerticalSeparator();
-widget.text = 'sample text';
+var widget = new libui.UiHorizontalBox();
+widget.padded = true;
+widget.append(new libui.UiMultilineEntry(), false);
+widget.append(new libui.UiVerticalSeparator(), false);
+widget.append(new libui.UiMultilineEntry(), false);
 win.setChild(widget);
 
 win.onClosing(function () {

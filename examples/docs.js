@@ -5,11 +5,29 @@ const existsSync = require('fs').existsSync;
 const bs = '```js';
 const be = '```';
 const t = '`';
+let readme = `# libui-node
+
+These pages document the ${t}libui-node${t} classes.
+If you are new to the framework, you should start reading basic documentation on how it work:
+
+* [initialization & event loop](initialization.md) - explains how to initialize the framework and how the event loop works.
+* [properties](properties.md) - explains how widgets properties are implemented by ${t}libui-node${t}.
+* [events](events.md) - explains how widgets events are implemented by ${t}libui-node${t}.
+* [UiWindow](window.md) - explains how to create and manage OS windows.
+* [Containers](containers.md) - explains how you can group widgets in tree hierarchies using different layout strategies.
+
+
+
+`;
+// const readmePath = resolve(__dirname, '../docs/readme.md');
 
 function writeFile(name, description, ...contents) {
-	const path = resolve(__dirname, '../docs', name.slice(2).toLowerCase() + '.md');
+	const filename = name.slice(2).toLowerCase() + '.md';
+	const path = resolve(__dirname, '../docs', filename);
 	const imagePath = resolve(__dirname, '../docs/media/', name + '.png');
 	const image = existsSync(imagePath) ? `![${name} example](media/${name}.png)` : '';
+	readme += `
+* [${name}](${filename}) - ${description}`;
 	const code = `
 var libui = require('libui');
 
@@ -62,15 +80,16 @@ ${contents.filter(c => c.type === 'property').map(c => c.content).join('\n')}
 # Methods
 
 ${contents.filter(c => c.type === 'method').map(c => c.content).join('\n')}
+${contents.filter(c => c.type === 'property').map(c => c.methods).join('\n')}
 
----
+${contents.filter(c => c.type === 'event').length === 0 ? '' : `---
 
 # Events
 
 See [events implementation](events.md) for generic details on how events are implemented.
 
 ${contents.filter(c => c.type === 'event').map(c => c.content).join('\n')}
-
+`}
 `;
 
 	writeFileSync(path, template);
@@ -79,8 +98,24 @@ ${contents.filter(c => c.type === 'event').map(c => c.content).join('\n')}
 }
 
 function property(name, type, description) {
+	const getterName = 'get' + name[0].toUpperCase() + name.slice(1);
+	const setterName = 'set' + name[0].toUpperCase() + name.slice(1);
 	return {
 		type: 'property',
+		methods: `
+## ${setterName}
+
+Set the value of property ${t}${name}${t}
+
+**Arguments**
+
+* value: ${type} - The new value for ${t}${name}${t} property.
+
+## ${getterName}
+
+Return the value of property ${t}${name}${t}
+
+`,
 		content: `
 ### ${name}: ${type}
 
@@ -112,7 +147,7 @@ function method(name, description, args) {
 ${description}
 
 ${args ? `
-### Arguments
+**Arguments**
 
 * ${args.join('\n* ')}
 ` : ''}
@@ -419,6 +454,41 @@ writeFile('UiVerticalBox', 'A container that stack its chidren vertically.',
 	method('toplevel', 'Return whether the control is a top level one or not.')
 );
 
+writeFile('UiTab', 'A container that show each chidren in a separate tab.',
+	property('visible', 'Boolean', 'Whether the widget should be visible or hidden. \nRead write.\nDefaults to `true`.'),
+	property('enabled', 'Boolean', 'Whether the widget should be enabled or disabled. \nRead write.\nDefaults to `true`.'),
+	method('append', 'Append a new child widget as last tab.', [
+		'label: String - the text to show in the new tab caption.',
+		'control: UiControl - the control to append.'
+	]),
+	method('insertAt', 'Insert a new child widget before specified position.', [
+		'label: String - the text to show in the new tab caption.',
+		'before: Number - the control will be inserted before this position',
+		'control: UiControl - the control to insert.'
+	]),
+
+	method('deleteAt', 'Remove the tab and widget at specified position.', [
+		'index: Number - the index of the tab to remove.'
+	]),
+
+	method('setMargined', 'Specifies that a tab should use a margin around its content.', [
+		'page: Number - the index of the tab.',
+		'margined: Boolean - whether to display a margin or not.'
+	]),
+
+	method('getMargined', 'Return a boolean that indicate if a tab is displaying a margin around its content.', [
+		'page: Number - the index of the tab.'
+	]),
+
+	method('numPages', 'Return the total number of tab pages contained in the widgets.'),
+
+	method('destroy', 'Destroy and free the control.'),
+	method('setParent', 'Change the parent of the control', [
+		'parent: UiControl - the new parent of the widget or null to detach it.'
+	]),
+	method('toplevel', 'Return whether the control is a top level one or not.')
+);
+
 writeFile('UiHorizontalBox', 'A container that stack its chidren horizontally.',
 	property('visible', 'Boolean', 'Whether the widget should be visible or hidden. \nRead write.\nDefaults to `true`.'),
 	property('enabled', 'Boolean', 'Whether the widget should be enabled or disabled. \nRead write.\nDefaults to `true`.'),
@@ -437,6 +507,24 @@ writeFile('UiHorizontalBox', 'A container that stack its chidren horizontally.',
 	]),
 	method('toplevel', 'Return whether the control is a top level one or not.')
 );
+
+writeFile('UiGroup', 'A container for a single widget that provide a caption and visually group it\'s children.',
+	property('visible', 'Boolean', 'Whether the widget should be visible or hidden. \nRead write.\nDefaults to `true`.'),
+	property('enabled', 'Boolean', 'Whether the widget should be enabled or disabled. \nRead write.\nDefaults to `true`.'),
+	property('margined', 'Boolean', 'This property specify if the group content area should have a margin or not.\nDefaults to false.'),
+	property('title', 'String', 'This property specify the caption of the group.\nDefaults to empty string.'),
+	method('setChild', 'Set the child widget of the group.', [
+		'control: UiControl - the control to append.'
+	]),
+
+	method('destroy', 'Destroy and free the control.'),
+	method('setParent', 'Change the parent of the control', [
+		'parent: UiControl - the new parent of the widget or null to detach it.'
+	]),
+	method('toplevel', 'Return whether the control is a top level one or not.')
+);
+
+// writeFileSync(readmePath, readme);
 
 /*
 var libui = require('../index.js');

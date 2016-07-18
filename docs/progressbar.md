@@ -77,16 +77,14 @@ Destroy and free the control.
 
 
 
-
 ## setParent
 
 Change the parent of the control
 
 
-### Arguments
+**Arguments**
 
 * parent: UiControl - the new parent of the widget or null to detach it.
-
 
 
 
@@ -97,12 +95,46 @@ Return whether the control is a top level one or not.
 
 
 
+## setVisible
 
----
+Set the value of property `visible`
 
-# Events
+**Arguments**
 
-See [events implementation](events.md) for generic details on how events are implemented.
+* value: Boolean - The new value for `visible` property.
+
+## getVisible
+
+Return the value of property `visible`
+
+
+
+## setEnabled
+
+Set the value of property `enabled`
+
+**Arguments**
+
+* value: Boolean - The new value for `enabled` property.
+
+## getEnabled
+
+Return the value of property `enabled`
+
+
+
+## setValue
+
+Set the value of property `value`
+
+**Arguments**
+
+* value: Number - The new value for `value` property.
+
+## getValue
+
+Return the value of property `value`
+
 
 
 

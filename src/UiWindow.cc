@@ -73,7 +73,7 @@ void UiWindow::onPositionChanged(nbind::cbFunction & cb) {
 	);
 }
 
-UiWindow::UiWindow(const char* title, int width, int height, int hasMenubar) {
+UiWindow::UiWindow(const char* title, int width, int height, bool hasMenubar) {
 	win = uiNewWindow(title, width, height, hasMenubar);
 }
 
@@ -89,11 +89,11 @@ void UiWindow::close() {
 	uiControlDestroy(uiControl(win));
 }
 
-void UiWindow::setMargined(int margined) {
+void UiWindow::setMargined(bool margined) {
 	uiWindowSetMargined(win, margined);
 }
 
-int UiWindow::getMargined() {
+bool UiWindow::getMargined() {
 	return uiWindowMargined(win);
 }
 
@@ -131,7 +131,7 @@ bool UiWindow::getBorderless() {
 
 
 void UiWindow::setContentSize(Size value) {
-	printf("setting content to (%d x %d)\n", value.getWidth(), value.getHeight());
+//	printf("setting content to (%d x %d)\n", value.getWidth(), value.getHeight());
 	uiWindowSetContentSize(win, value.getWidth(), value.getHeight());
 }
 
@@ -145,7 +145,7 @@ Size UiWindow::getContentSize() {
 
 
 NBIND_CLASS(UiWindow) {
-  construct<const char *, int, int, int>();
+  construct<const char *, int, int, bool>();
   method(show);
   method(close);
   method(setChild);
