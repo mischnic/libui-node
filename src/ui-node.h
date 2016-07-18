@@ -104,7 +104,9 @@ class UiControl {
 	private:
 		uiControl *handle;
 
+
 	public:
+		void (*originalDestroy)(uiControl *);
 		uiControl * getHandle();
 		UiControl(uiControl *hnd);
 		~UiControl();
@@ -800,7 +802,7 @@ class UiArea  : public UiControl {
 };
 
 extern std::map <uiArea *, UiArea *> areasMap;
-extern std::map <uiControl *, UiControl *> controlsMap;
+extern std::unordered_map <uiControl *, UiControl *> controlsMap;
 
 typedef struct UiAreaHandler {
 	void (*Draw)(UiAreaHandler *self, uiArea *area, uiAreaDrawParams *params);

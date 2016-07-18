@@ -5,6 +5,7 @@
 				"auto.gypi"
 			],
 			"sources": [
+				"src/UiControl.cc",
 				"src/UiFontButton.cc",
 				"src/UiArea/DrawTextFont.cc",
 				"src/UiArea/DrawTextFontDescriptor.cc",
@@ -47,7 +48,6 @@
 				"src/UiSeparator.cc",
 				"src/UiProgressBar.cc",
 				"src/Ui.cc",
-				"src/UiControl.cc",
 				"src/UiLabel.cc",
 				"src/UiButton.cc",
 			],

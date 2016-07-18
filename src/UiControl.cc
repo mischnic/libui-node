@@ -4,21 +4,24 @@
 #include "ui-node.h"
 #include <map>
 
-std::map <uiControl *, UiControl *> controlsMap;
+std::unordered_map <uiControl *, UiControl *> controlsMap;
 
 uiControl * UiControl::getHandle() {
 	return handle;
 }
 
-void onDestroy(uiControl *c) {
+static void onDestroy(uiControl *c) {
+	UiControl * self = controlsMap[c];
+	(*(self->originalDestroy))(c);
 	controlsMap.erase(c);
 	printf("destroy control %p\n", c);
 }
 
 UiControl::UiControl(uiControl* hnd) {
 	handle = hnd;
+	originalDestroy = hnd->Destroy;
 	hnd->Destroy = onDestroy;
-	controlsMap[hnd] = (UiControl *) this;
+	controlsMap[hnd] = this;
 	printf("created %p\n", handle);
 }
 
