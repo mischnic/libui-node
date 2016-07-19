@@ -15,7 +15,7 @@ function openBigWindow() {
 	vBox.padded = true;
 
 	var entries = [];
-	for (var i = 0; i < 300; i++) {
+	for (var i = 0; i < 3; i++) {
 		entries[i] = new libui.UiEntry();
 		entries[i].text = i;
 		vBox.append(entries[i], 1);

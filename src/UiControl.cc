@@ -3,6 +3,7 @@
 #include "nbind/nbind.h"
 #include "ui-node.h"
 #include <map>
+#include <nan.h>
 
 std::unordered_map <uiControl *, UiControl *> controlsMap;
 
@@ -35,6 +36,17 @@ void UiControl::destroy() {
 }
 
 void UiControl::setParent (UiControl *parent) {
+
+	Nan::Persistent<v8::Object> *pers = nbind::BindWrapper<UiControl>::findInstance(this);
+	printf("pers %p\n", pers);
+	if (parent != NULL) {
+		printf("set Parent\n");
+		pers->ClearWeak(); //new Nan::Persistent<v8::Object>(Nan::New(*pers));
+	} else {
+		printf("clear Parent\n");
+		pers->SetWeak(pers, nbind::BindWrapper<UiControl>::weakCallback, Nan::WeakCallbackType::kParameter);
+	}
+
 	uiControlSetParent(handle, parent->getHandle());
 }
 
