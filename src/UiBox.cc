@@ -5,7 +5,8 @@
 
 UiBox::UiBox(uiControl *control) : UiControl( control ) {}
 
-void UiBox::append(UiControl *control, bool stretchy) {
+void UiBox::append(std::shared_ptr<UiControl> control, bool stretchy) {
+	children.push_back(control);
 	uiBoxAppend(
 		(uiBox *) getHandle(),
 		control->getHandle(),
@@ -13,7 +14,12 @@ void UiBox::append(UiControl *control, bool stretchy) {
 	);
 }
 
+UiBox::~UiBox() {
+	printf("destroy UiBox c++ %p\n", getHandle());
+}
+
 void UiBox::deleteAt(int index) {
+
 	uiBoxDelete(
 		(uiBox *) getHandle(),
 		index

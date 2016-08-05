@@ -28,6 +28,10 @@ IMPLEMENT_EVENT(UiEntryBase, uiEntry, onChanged, uiEntryOnChanged)
 
 UiEntry::UiEntry() : UiEntryBase( (uiControl*) uiNewEntry() ) {}
 
+UiEntry::~UiEntry() {
+	printf("destroy UiEntry c++ %p\n", getHandle());
+}
+
 INHERITS_CONTROL_METHODS(UiEntry)
 INHERITS_ENTRY_METHODS(UiEntry)
 

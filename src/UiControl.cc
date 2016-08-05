@@ -11,6 +11,11 @@ UiControl::UiControl(uiControl* hnd) {
 	handle = hnd;
 }
 
+
+UiControl::~UiControl() {
+	// printf("destroy c++ %p\n", handle);
+}
+
 void UiControl::destroy() {
 	uiControlDestroy(handle);
 }

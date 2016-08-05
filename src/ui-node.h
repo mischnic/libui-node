@@ -7,9 +7,8 @@
 
 
 #define DEFINE_EVENT(NAME) \
-	private: \
-		nbind::cbFunction * NAME ## Callback = NULL; \
 	public: \
+		nbind::cbFunction * NAME ## Callback = NULL; \
 		void NAME(nbind::cbFunction & cb); \
 
 
@@ -82,13 +81,13 @@
 	method(setReadOnly);
 
 #define DEFINE_BOX_METHODS() \
-	void append(UiControl *control, bool stretchy); \
+	void append(std::shared_ptr<UiControl> control, bool stretchy); \
 	void deleteAt(int index); \
 	bool getPadded(); \
 	void setPadded(bool padded);
 
 #define INHERITS_BOX_METHODS(CLASS) \
-	void CLASS::append(UiControl *control, bool stretchy) { UiBox::append(control, stretchy); } \
+	void CLASS::append(std::shared_ptr<UiControl> control, bool stretchy) { UiBox::append(control, stretchy); } \
 	void CLASS::deleteAt(int index) { UiBox::deleteAt(index); } \
 	bool CLASS::getPadded() { return UiBox::getPadded(); } \
 	void CLASS::setPadded(bool padded) { UiBox::setPadded(padded); }
@@ -107,6 +106,7 @@ class UiControl {
 	public:
 		uiControl * getHandle();
 		UiControl(uiControl *hnd);
+		~UiControl();
 		DEFINE_CONTROL_METHODS()
 };
 
@@ -215,6 +215,8 @@ class UiEntryBase : public UiControl {
 class UiEntry : public UiEntryBase {
 	public:
 		UiEntry();
+		~UiEntry();
+
 		DEFINE_CONTROL_METHODS()
 		DEFINE_ENTRY_METHODS()
 		void onChanged(nbind::cbFunction & cb);
@@ -342,7 +344,11 @@ class UiSpinbox : public UiControl {
 class UiBox : public UiControl {
 	public:
 		UiBox(uiControl *hnd);
+		~UiBox();
 	DEFINE_BOX_METHODS()
+
+	private:
+		std::vector<std::shared_ptr<UiControl>> children;
 };
 
 class UiVerticalBox : public UiBox {
@@ -350,6 +356,7 @@ class UiVerticalBox : public UiBox {
 		UiVerticalBox();
 		DEFINE_BOX_METHODS()
 		DEFINE_CONTROL_METHODS()
+
 };
 
 class UiHorizontalBox : public UiBox {
@@ -357,6 +364,7 @@ class UiHorizontalBox : public UiBox {
 		UiHorizontalBox();
 		DEFINE_BOX_METHODS()
 		DEFINE_CONTROL_METHODS()
+
 };
 
 class Point {
@@ -425,14 +433,15 @@ class UiWindow {
 	private:
 		uiWindow *win;
 
+
 	public:
 		UiWindow(const char* title, int width, int height, bool hasMenubar);
+		~UiWindow();
 		uiWindow * getHandle();
-		void show();
-		void close();
+
 		void setMargined(bool margined);
 		bool getMargined();
-		void setChild(UiControl *control);
+		void setChild(std::shared_ptr<UiControl> control);
 		void setTitle(const char * title);
 		const char * getTitle();
 		Point getPosition();
@@ -444,6 +453,12 @@ class UiWindow {
 		void setBorderless(bool value);
 		Size getContentSize();
 		void setContentSize(Size value);
+
+		static void show(std::shared_ptr<UiWindow> win);
+		static void close(std::shared_ptr<UiWindow> win);
+
+		std::shared_ptr<UiControl> child;
+		size_t visibleWindowsIdx;
 };
 
 

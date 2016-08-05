@@ -3,12 +3,14 @@ var procStats = require('proc-stats');
 var libui = require('../index.js');
 
 libui.Ui.init();
+// var showedWins = [];
 
 function openBigWindow() {
+	// console.log(showedWins, winCheckMem);
 	var win = new libui.UiWindow('Forms window', 80, 60, false);
 	win.margined = 1;
 	win.onClosing(function () {
-		win.close();
+		libui.UiWindow.close(win);
 	});
 
 	var vBox = new libui.UiVerticalBox();
@@ -22,7 +24,9 @@ function openBigWindow() {
 	}
 
 	win.setChild(vBox);
-	win.show();
+	libui.UiWindow.show(win);
+	// showedWins.push(win);
+	global.gc();
 }
 
 var winCheckMem = new libui.UiWindow('Memory', 200, 100, true);
@@ -37,7 +41,7 @@ vBox2.append(label, true);
 vBox2.append(btn, false);
 
 winCheckMem.setChild(vBox2);
-winCheckMem.show();
+libui.UiWindow.show(winCheckMem);
 
 var interval = setInterval(function () {
 	procStats.stats(function (err, result) {
@@ -56,6 +60,7 @@ CPU: ${result.cpu} %
 
 winCheckMem.onClosing(function () {
 	clearInterval(interval);
+	libui.UiWindow.close(winCheckMem);
 	libui.stopLoop();
 });
 

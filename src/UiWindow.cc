@@ -3,6 +3,7 @@
 #include "nbind/api.h"
 #include "nbind/nbind.h"
 
+std::vector<std::shared_ptr<UiWindow>> visibleWindows;
 
 Point UiWindow::getPosition() {
 	int x = 0;
@@ -13,6 +14,11 @@ Point UiWindow::getPosition() {
 		&y
 	);
 	return Point(x, y);
+}
+
+
+UiWindow::~UiWindow() {
+	printf("destroy UiWindow c++ %p\n", win);
 }
 
 void UiWindow::setPosition(Point position) {
@@ -30,17 +36,26 @@ void UiWindow::center() {
 
 
 static int UiWindow_onClosing(uiWindow *w, void *data) {
-	nbind::cbFunction *cb = (nbind::cbFunction *) data;
+	UiWindow * win = (UiWindow *) data;
+	visibleWindows[win->visibleWindowsIdx].reset();
+	visibleWindows[win->visibleWindowsIdx] = nullptr;
+
+	nbind::cbFunction *cb = win->onClosingCallback;
 	(*cb)();
+
+	printf("resetting child\n");
+	win->child.reset();
+
 	return 0;
 }
 
 void UiWindow::onClosing(nbind::cbFunction & cb) {
+
 	onClosingCallback = new nbind::cbFunction(cb);
 	uiWindowOnClosing(
 		(uiWindow *) getHandle(),
 		UiWindow_onClosing,
-		onClosingCallback
+		this
 	);
 }
 
@@ -81,12 +96,15 @@ uiWindow * UiWindow::getHandle() {
 	return win;
 }
 
-void UiWindow::show() {
-	uiControlShow(uiControl(win));
+
+void UiWindow::show(std::shared_ptr<UiWindow> window) {
+	window->visibleWindowsIdx = visibleWindows.size();
+	visibleWindows.push_back(window);
+	uiControlShow(uiControl(window->win));
 }
 
-void UiWindow::close() {
-	uiControlDestroy(uiControl(win));
+void UiWindow::close(std::shared_ptr<UiWindow> window) {
+	uiControlDestroy(uiControl(window->win));
 }
 
 void UiWindow::setMargined(bool margined) {
@@ -97,13 +115,9 @@ bool UiWindow::getMargined() {
 	return uiWindowMargined(win);
 }
 
-void UiWindow::setChild(UiControl *control) {
+void UiWindow::setChild(std::shared_ptr<UiControl> control) {
 	uiWindowSetChild(win, control->getHandle());
-}
-
-// TODO: raise issue on nbind repo
-void UiWindow::removeChild() {
-	uiWindowSetChild(win, NULL);
+	child = control;
 }
 
 void UiWindow::setTitle(const char * title) {
@@ -149,7 +163,6 @@ NBIND_CLASS(UiWindow) {
   method(show);
   method(close);
   method(setChild);
-  method(removeChild);
   method(onClosing);
   method(onContentSizeChanged);
   getset(getMargined, setMargined);

@@ -10,7 +10,6 @@ var widgets = [];
 var totW = 30;
 
 function close() {
-
 	for (var i = 0; i < totW; i++) {
 		vBox.deleteAt(0);
 	}
