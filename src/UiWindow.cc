@@ -37,14 +37,14 @@ void UiWindow::center() {
 
 static int UiWindow_onClosing(uiWindow *w, void *data) {
 	UiWindow * win = (UiWindow *) data;
-	visibleWindows[win->visibleWindowsIdx].reset();
-	visibleWindows[win->visibleWindowsIdx] = nullptr;
 
 	nbind::cbFunction *cb = win->onClosingCallback;
 	(*cb)();
 
 	printf("resetting child\n");
 	win->child.reset();
+	visibleWindows[win->visibleWindowsIdx].reset();
+	visibleWindows[win->visibleWindowsIdx] = nullptr;
 
 	return 0;
 }

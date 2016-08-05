@@ -26,7 +26,6 @@ function openBigWindow() {
 	win.setChild(vBox);
 	libui.UiWindow.show(win);
 	// showedWins.push(win);
-	global.gc();
 }
 
 var winCheckMem = new libui.UiWindow('Memory', 200, 100, true);
@@ -44,6 +43,8 @@ winCheckMem.setChild(vBox2);
 libui.UiWindow.show(winCheckMem);
 
 var interval = setInterval(function () {
+	global.gc();
+
 	procStats.stats(function (err, result) {
 		if (err) {
 			label.text = err.message;
