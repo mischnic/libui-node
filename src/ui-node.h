@@ -69,6 +69,7 @@
   std::string getText();           \
   void setReadOnly(bool readOnly); \
   bool getReadOnly();
+  // const char* getText();           \
 
 #define INHERITS_ENTRY_METHODS(CLASS)                                   \
   void CLASS::setText(const char* text) { UiEntryBase::setText(text); } \
@@ -77,6 +78,7 @@
     UiEntryBase::setReadOnly(readOnly);                                 \
   }                                                                     \
   bool CLASS::getReadOnly() { return UiEntryBase::getReadOnly(); }      \
+  // const char* CLASS::getText() { return UiEntryBase::getText(); }       \
   // void CLASS::onChanged(void(*cb)()) { UiEntryBase::onChanged(cb); }
 
 #define DECLARE_ENTRY_METHODS()     \

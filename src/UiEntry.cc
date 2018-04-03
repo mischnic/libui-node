@@ -10,6 +10,10 @@ void UiEntryBase::setText(const char* text) {
   }
 }
 
+// const char* UiEntryBase::getText() {
+//   return uiEntryText((uiEntry*)getHandle());
+// }
+
 std::string UiEntryBase::getText() {
   char *src = uiEntryText((uiEntry*)getHandle());
   std::string string(src);

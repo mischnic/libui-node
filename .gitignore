@@ -87,6 +87,8 @@ build
 *.so
 *.so.*
 
+*.o
+
 
 *.dylib
 

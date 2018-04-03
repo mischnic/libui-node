@@ -1,7 +1,7 @@
 CC=clang
 CXX=clang++
 
-CPPFLAGS=-I../src -I.. -std=c++11 -g
+CPPFLAGS=-I../src -I.. -std=c++11 -O0
 
 test: libui-node.dylib test.o
 	${CXX} test.o -o $@ ${CPPFLAGS} -lui-node -L. -rpath '@loader_path/..' -g

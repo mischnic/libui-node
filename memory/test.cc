@@ -3,25 +3,42 @@
 #include <cstdio>
 #include <iostream>
 
+#include <sys/time.h>
+#include <sys/resource.h>
+
+long getMemoryUsage() 
+{
+  struct rusage usage;
+  if(0 == getrusage(RUSAGE_SELF, &usage))
+    return usage.ru_maxrss; // bytes
+  else
+    return 0;
+}
+
 UiEntry entry;
 
-void a(){
-	for(int i = 0; i < 100; i++){
+void a(int max){
+	for(int i = 0; i < max; i++){
 		entry.getText();
+		// printf("%d\n", i);
+		std::cout << getMemoryUsage() << "\n";
 	}
 	std::cout << entry.getText() << "\n";
 }
 
 int main(){
-	Ui::init();
+	// Ui::init();
 
 	UiWindow win("UiEntry example", 320, 320, true);
 
-	entry.onChanged(a);
-	entry.setText("Hello!");
+	// entry.onChanged(a);
+	entry.setText("kasdjklasdjkladsjkladsjkldasjkldsajkldasjlkdasjkladsljkajkldsjkladsHelloadsjksadjklsadjklasdjklsadjlkasdjlkadjslkjlkadsjlkasdjlkasdjklasdjkladsjkladsjkldasjkldsajkldasjlkdasjkladsljkajkldsjkladsHelloadsjksadjklsadjklasdjklsadjlkasdjlkadjslkjlkadsjlkasdjlkasdjklasdjkladsjkladsjkldasjkldsajkldasjlkdasjkladsljkajkldsjkladsHelloadsjksadjklsadjklasdjklsadjlkasdjlkadjslkjlkadsjlkasdjlkasdjklasdjkladsjkladsjkldasjkldsajkldasjlkdasjkladsljkajkldsjkladsHelloadsjksadjklsadjklasdjklsadjlkasdjlkadjslkjlkadsjlkasdjlkasdjklasdjkladsjkladsjkldasjkldsajkldasjlkdasjkladsljkajkldsjkladsHelloadsjksadjklsadjklasdjklsadjlkasdjlkadjslkjlkadsjlkasdjlkasdjklasdjkladsjkladsjkldasjkldsajkldasjlkdasjkladsljkajkldsjkladsHelloadsjksadjklsadjklasdjklsadjlkasdjlkadjslkjlkadsjlkasdjlkasdjklasdjkladsjkladsjkldasjkldsajkldasjlkdasjkladsljkajkldsjkladsHelloadsjksadjklsadjklasdjklsadjlkasdjlkadjslkjlkadsjlkasdjlkasdjklasdjkladsjkladsjkldasjkldsajkldasjlkdasjkladsljkajkldsjkladsHelloadsjksadjklsadjklasdjklsadjlkasdjlkadjslkjlkadsjlkasdjlkasdjklasdjkladsjkladsjkldasjkldsajkldasjlkdasjkladsljkajkldsjklads!");
 
-	win.setChild(&entry);
+	// win.setChild(&entry);
 
-	win.show();
-	Ui::main();
+	a(100);
+
+
+	// win.show();
+	// Ui::main();
 }
