@@ -1,6 +1,4 @@
 #include "../ui.h"
-#include "nbind/api.h"
-#include "nbind/nbind.h"
 #include "ui-node.h"
 
 UiHorizontalSeparator::UiHorizontalSeparator()
@@ -8,17 +6,11 @@ UiHorizontalSeparator::UiHorizontalSeparator()
 
 INHERITS_CONTROL_METHODS(UiHorizontalSeparator)
 
-NBIND_CLASS(UiHorizontalSeparator) {
-	construct<>();
-	DECLARE_CHILD_CONTROL_METHODS()
-}
+
 
 UiVerticalSeparator::UiVerticalSeparator()
 		: UiControl((uiControl*)uiNewVerticalSeparator()) {}
 
 INHERITS_CONTROL_METHODS(UiVerticalSeparator)
 
-NBIND_CLASS(UiVerticalSeparator) {
-	construct<>();
-	DECLARE_CHILD_CONTROL_METHODS()
-}
+

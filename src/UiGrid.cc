@@ -1,6 +1,4 @@
 #include "../ui.h"
-#include "nbind/api.h"
-#include "nbind/nbind.h"
 #include "ui-node.h"
 
 UiGrid::UiGrid() : UiControl((uiControl*)uiNewGrid()) {}
@@ -41,12 +39,4 @@ void UiGrid::insertAt(UiControl* c,
 
 INHERITS_CONTROL_METHODS(UiGrid)
 
-NBIND_CLASS(UiGrid) {
-  construct<>();
-  method(append);
-  method(insertAt);
-  method(getPadded);
-  method(setPadded);
-  getset(getPadded, setPadded);
-  DECLARE_CHILD_CONTROL_METHODS()
-}
+

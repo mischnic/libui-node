@@ -1,6 +1,4 @@
 #include "../ui.h"
-#include "nbind/api.h"
-#include "nbind/nbind.h"
 #include "ui-node.h"
 
 UiGroup::UiGroup(const char* text) : UiControl((uiControl*)uiNewGroup(text)) {}
@@ -28,15 +26,4 @@ void UiGroup::setTitle(const char* title) {
 
 INHERITS_CONTROL_METHODS(UiGroup)
 
-NBIND_CLASS(UiGroup) {
-  construct<const char*>();
-  construct<>();
-  method(setChild);
-  method(getTitle);
-  method(setTitle);
-  method(getMargined);
-  method(setMargined);
-  getset(getTitle, setTitle);
-  getset(getMargined, setMargined);
-  DECLARE_CHILD_CONTROL_METHODS()
-}
+

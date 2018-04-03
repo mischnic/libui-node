@@ -1,6 +1,4 @@
 #include "../ui.h"
-#include "nbind/api.h"
-#include "nbind/nbind.h"
 #include "ui-node.h"
 
 IMPLEMENT_EVENT(UiCheckbox, uiCheckbox, onToggled, uiCheckboxOnToggled)
@@ -30,15 +28,4 @@ bool UiCheckbox::getChecked() {
   return uiCheckboxChecked((uiCheckbox*)getHandle());
 }
 
-NBIND_CLASS(UiCheckbox) {
-  construct<const char*>();
-  construct<>();
-  DECLARE_CHILD_CONTROL_METHODS()
-  getset(getChecked, setChecked);
-  getset(getText, setText);
-  method(getChecked);
-  method(setChecked);
-  method(getText);
-  method(setText);
-  method(onToggled);
-}
+

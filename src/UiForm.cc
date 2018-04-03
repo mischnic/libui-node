@@ -1,6 +1,4 @@
 #include "../ui.h"
-#include "nbind/api.h"
-#include "nbind/nbind.h"
 #include "ui-node.h"
 
 UiForm::UiForm() : UiControl((uiControl*)uiNewForm()) {}
@@ -23,12 +21,4 @@ void UiForm::setPadded(bool padded) {
 
 INHERITS_CONTROL_METHODS(UiForm)
 
-NBIND_CLASS(UiForm) {
-  construct<>();
-  method(append);
-  method(deleteAt);
-  method(getPadded);
-  method(setPadded);
-  getset(getPadded, setPadded);
-  DECLARE_CHILD_CONTROL_METHODS()
-}
+

@@ -1,6 +1,5 @@
 #include "../../ui.h"
 #include "../ui-node.h"
-#include "nbind/nbind.h"
 
 
 UiDrawPath::UiDrawPath(int fillMode) {
@@ -49,15 +48,4 @@ uiDrawPath *UiDrawPath::getHandle() {
 	return handle;
 }
 
-NBIND_CLASS(UiDrawPath) {
-	construct<int>();
-	method(freePath);
-	method(newFigure);
-	method(newFigureWithArc);
-	method(lineTo);
-	method(arcTo);
-	method(bezierTo);
-	method(closeFigure);
-	method(addRectangle);
-	method(end);
-}
+

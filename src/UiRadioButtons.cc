@@ -1,6 +1,4 @@
 #include "../ui.h"
-#include "nbind/api.h"
-#include "nbind/nbind.h"
 #include "ui-node.h"
 
 UiRadioButtons::UiRadioButtons() : UiControl((uiControl*)uiNewRadioButtons()) {}
@@ -27,12 +25,4 @@ void UiRadioButtons::append(const char* text) {
   uiRadioButtonsAppend((uiRadioButtons*)getHandle(), text);
 }
 
-NBIND_CLASS(UiRadioButtons) {
-  construct<>();
-  DECLARE_CHILD_CONTROL_METHODS()
-  method(append);
-  getset(getSelected, setSelected);
-  method(getSelected);
-  method(setSelected);
-  method(onSelected);
-}
+

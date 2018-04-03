@@ -1,6 +1,4 @@
 #include "../ui.h"
-#include "nbind/api.h"
-#include "nbind/nbind.h"
 #include "ui-node.h"
 
 UiMultilineEntry::UiMultilineEntry()
@@ -36,15 +34,4 @@ void UiMultilineEntry::append(const char* text) {
   uiMultilineEntryAppend((uiMultilineEntry*)getHandle(), text);
 }
 
-NBIND_CLASS(UiMultilineEntry) {
-  construct<>();
-  DECLARE_CHILD_CONTROL_METHODS()
-  getset(getText, setText);
-  getset(getReadOnly, setReadOnly);
-  method(getText);
-  method(setText);
-  method(getReadOnly);
-  method(setReadOnly);
-  method(append);
-  method(onChanged);
-}
+

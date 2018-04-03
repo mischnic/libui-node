@@ -1,6 +1,4 @@
 #include "../ui.h"
-#include "nbind/api.h"
-#include "nbind/nbind.h"
 #include "ui-node.h"
 
 UiButton::UiButton(const char* text)
@@ -19,12 +17,4 @@ const char* UiButton::getText() {
 
 IMPLEMENT_EVENT(UiButton, uiButton, onClicked, uiButtonOnClicked)
 
-NBIND_CLASS(UiButton) {
-	construct<const char*>();
-	construct<>();
-	DECLARE_CHILD_CONTROL_METHODS()
-	getset(getText, setText);
-	method(getText);
-	method(setText);
-	method(onClicked);
-}
+

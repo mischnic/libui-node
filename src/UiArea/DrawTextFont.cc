@@ -1,6 +1,5 @@
 #include "../../ui.h"
 #include "../ui-node.h"
-#include "nbind/nbind.h"
 
 
 DrawTextFont::DrawTextFont () {}
@@ -54,11 +53,4 @@ void DrawTextFont::loadClosestFont(const char *family, double size, int weight, 
 //	printf("font handle %p\n", handle);
 }
 
-NBIND_CLASS(DrawTextFont) {
-	construct<>();
-	method(listFontFamilies);
-	method(loadClosestFont);
-	method(free);
-	method(describe);
-	method(getMetrics);
-}
+

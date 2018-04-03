@@ -1,6 +1,4 @@
 #include "../ui.h"
-#include "nbind/api.h"
-#include "nbind/nbind.h"
 #include "ui-node.h"
 
 UiColorButton::UiColorButton() : UiControl((uiControl*)uiNewColorButton()) {}
@@ -28,11 +26,4 @@ Color UiColorButton::getColor() {
   return Color(r, g, b, a);
 }
 
-NBIND_CLASS(UiColorButton) {
-  construct<>();
-  DECLARE_CHILD_CONTROL_METHODS()
-  method(setColor);
-  method(getColor);
-  method(onChanged);
-  getset(getColor, setColor);
-}
+

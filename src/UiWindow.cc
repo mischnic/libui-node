@@ -1,31 +1,25 @@
 #include "../ui.h"
-#include "nbind/api.h"
-#include "nbind/nbind.h"
 #include "ui-node.h"
 
-static int UiWindow_onClosing(uiWindow *w, void *data) {
-  nbind::cbFunction *cb = (nbind::cbFunction *)data;
-  (*cb)();
-  return 0;
-}
+// static int UiWindow_onClosing(uiWindow *w, void *data) {
+//   nbind::cbFunction *cb = (nbind::cbFunction *)data;
+//   (*cb)();
+//   return 0;
+// }
 
-void UiWindow::onClosing(nbind::cbFunction &cb) {
-  onClosingCallback = new nbind::cbFunction(cb);
-  uiWindowOnClosing((uiWindow *)getHandle(), UiWindow_onClosing,
-                    onClosingCallback);
-}
+// void UiWindow::onClosing(void(*cb)()) {
+//   uiWindowOnClosing((uiWindow *)getHandle(), cb, NULL);
+// }
 
-static void UiWindow_onContentSizeChanged(uiWindow *w, void *data) {
-  nbind::cbFunction *cb = (nbind::cbFunction *)data;
-  (*cb)();
-}
+// static void UiWindow_onContentSizeChanged(uiWindow *w, void *data) {
+//   nbind::cbFunction *cb = (nbind::cbFunction *)data;
+//   (*cb)();
+// }
 
-void UiWindow::onContentSizeChanged(nbind::cbFunction &cb) {
-  onContentSizeChangedCallback = new nbind::cbFunction(cb);
-  uiWindowOnContentSizeChanged((uiWindow *)getHandle(),
-                               UiWindow_onContentSizeChanged,
-                               onContentSizeChangedCallback);
-}
+// void UiWindow::onContentSizeChanged(void(*cb)()) {
+//   // onContentSizeChangedCallback = new nbind::cbFunction(cb);
+//   uiWindowOnContentSizeChanged((uiWindow *)getHandle(), cb, NULL);
+// }
 
 UiWindow::UiWindow(const char *title, int width, int height, bool hasMenubar) {
   win = uiNewWindow(title, width, height, hasMenubar);
@@ -69,25 +63,4 @@ Size UiWindow::getContentSize() {
   return Size(w, h);
 }
 
-NBIND_CLASS(UiWindow) {
-  construct<const char *, int, int, bool>();
-  method(show);
-  method(close);
-  method(setChild);
-  method(onClosing);
-  method(onContentSizeChanged);
-  getset(getMargined, setMargined);
-  getset(getTitle, setTitle);
 
-  getset(getContentSize, setContentSize);
-  method(getContentSize);
-  method(setContentSize);
-  method(onContentSizeChanged);
-
-  getset(getFullscreen, setFullscreen);
-  method(getFullscreen);
-  method(setFullscreen);
-  getset(getBorderless, setBorderless);
-  method(getBorderless);
-  method(setBorderless);
-}

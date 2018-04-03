@@ -1,7 +1,12 @@
 #include <uv.h>
 #include <atomic>
 #include "../ui.h"
-#include "nbind/nbind.h"
+
+class EventLoop {
+public:
+  static void start();
+  static void stop();
+};
 
 extern int uiEventsPending();
 extern int uiLoopWakeup();
@@ -57,7 +62,7 @@ void redraw(uv_timer_t* handle) {
     return;
   }
   uv_timer_stop(handle);
-  Nan::HandleScope scope;
+  // Nan::HandleScope scope;
 
   /* Blocking call that wait for a node or GUI event pending */
   guiBlocked = true;
@@ -106,9 +111,7 @@ void stopAsync(uv_timer_t* handle) {
   uiQuit();
 }
 
-struct EventLoop {
-  /* This function start the event loop and exit immediately */
-  static void start() {
+void EventLoop::start() {
     /* if the loop is already running, this is a noop */
     if (running) {
       return;
@@ -134,16 +137,13 @@ struct EventLoop {
   }
 
   /* This function start the event loop and exit immediately */
-  static void stop() {
+  void EventLoop::stop() {
     // printf("stopping\n");
 
     uv_timer_t* closeTimer = new uv_timer_t();
     uv_timer_init(uv_default_loop(), closeTimer);
     uv_timer_start(closeTimer, stopAsync, 1, 0);
   }
-};
 
-NBIND_CLASS(EventLoop) {
-  method(start);
-  method(stop);
-}
+
+

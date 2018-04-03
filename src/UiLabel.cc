@@ -1,6 +1,4 @@
 #include "../ui.h"
-#include "nbind/api.h"
-#include "nbind/nbind.h"
 #include "ui-node.h"
 
 UiLabel::UiLabel(const char* text) : UiControl((uiControl*)uiNewLabel(text)) {}
@@ -16,11 +14,4 @@ const char* UiLabel::getText() {
 	return uiLabelText((uiLabel*)getHandle());
 }
 
-NBIND_CLASS(UiLabel) {
-	construct<const char*>();
-	construct<>();
-	DECLARE_CHILD_CONTROL_METHODS()
-	getset(getText, setText);
-	method(getText);
-	method(setText);
-}
+

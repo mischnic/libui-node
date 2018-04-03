@@ -1,6 +1,5 @@
 #include "../ui.h"
 #include "ui-node.h"
-#include "nbind/nbind.h"
 
 Size::Size(int width, int height) {
 	w = width;
@@ -24,17 +23,5 @@ void Size::setHeight(int value) {
 	h = value;
 }
 
-void Size::toJS(nbind::cbOutput output) {
-	output(w, h);
-}
 
-NBIND_CLASS(Size) {
-  construct<int, int>();
-  method(getWidth);
-  method(setWidth);
-  method(getHeight);
-  method(setHeight);
 
-  getset(getWidth, setWidth);
-  getset(getHeight, setHeight);
-}

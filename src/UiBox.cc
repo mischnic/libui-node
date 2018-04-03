@@ -1,6 +1,4 @@
 #include "../ui.h"
-#include "nbind/api.h"
-#include "nbind/nbind.h"
 #include "ui-node.h"
 
 UiBox::UiBox(uiControl* control) : UiControl(control) {}
@@ -31,14 +29,6 @@ UiHorizontalBox::UiHorizontalBox() : UiBox((uiControl*)uiNewHorizontalBox()) {}
 INHERITS_CONTROL_METHODS(UiHorizontalBox)
 INHERITS_BOX_METHODS(UiHorizontalBox)
 
-NBIND_CLASS(UiVerticalBox) {
-	construct<>();
-	DECLARE_CHILD_CONTROL_METHODS()
-	DECLARE_BOX_METHODS()
-}
 
-NBIND_CLASS(UiHorizontalBox) {
-	construct<>();
-	DECLARE_CHILD_CONTROL_METHODS()
-	DECLARE_BOX_METHODS()
-}
+
+

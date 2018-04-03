@@ -1,6 +1,5 @@
 #include "../../ui.h"
 #include "../ui-node.h"
-#include "nbind/nbind.h"
 
 UiDrawContext::UiDrawContext(uiDrawContext *ctx) {
 	c = ctx;
@@ -36,13 +35,4 @@ void UiDrawContext::text(double x, double y, DrawTextLayout *layout) {
 
 
 
-NBIND_CLASS(UiDrawContext) {
-	construct<uiDrawContext *>();
-	method(stroke);
-	method(fill);
-	method(transform);
-	method(clip);
-	method(save);
-	method(restore);
-	method(text);
-}
+

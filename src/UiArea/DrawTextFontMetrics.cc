@@ -1,6 +1,5 @@
 #include "../../ui.h"
 #include "../ui-node.h"
-#include "nbind/nbind.h"
 
 
 
@@ -29,10 +28,4 @@ double DrawTextFontMetrics::getUnderlineThickness() {
 }
 
 
-NBIND_CLASS(DrawTextFontMetrics) {
-	method(getAscent);
-	method(getDescent);
-	method(getLeading);
-	method(getUnderlinePos);
-	method(getUnderlineThickness);
-}
+

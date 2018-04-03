@@ -1,7 +1,5 @@
 #include "../ui.h"
 #include "ui-node.h"
-#include "nbind/api.h"
-#include "nbind/nbind.h"
 
 static void UiMenuItem_onClicked(uiMenuItem *sender, uiWindow *window, void *data) {
 	nbind::cbFunction *cb = (nbind::cbFunction *) data;
@@ -87,21 +85,7 @@ void UiMenu::appendSeparator() {
 
 
 
-NBIND_CLASS(UiMenu) {
-	construct<const char *>();
-  method(appendItem);
-	method(appendCheckItem);
-	method(appendQuitItem);
-	method(appendPreferencesItem);
-	method(appendAboutItem);
-	method(appendSeparator);
-}
 
-NBIND_CLASS(UiMenuItem) {
-	construct<uiMenuItem *>();
-	method(enable);
-	method(disable);
-	method(onClicked);
-	getset(getChecked, setChecked);
-}
+
+
 

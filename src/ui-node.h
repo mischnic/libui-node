@@ -3,24 +3,25 @@
 #define ui_node
 
 #include <map>
-#include "nbind/api.h"
+#include <vector>
+#include <string>
 
-#define DEFINE_EVENT(NAME)                  \
- private:                                   \
-  nbind::cbFunction* NAME##Callback = NULL; \
-                                            \
- public:                                    \
-  void NAME(nbind::cbFunction& cb);
+#define DEFINE_EVENT(NAME)                  
+ // private:                                   \
+ //  nbind::cbFunction* NAME##Callback = NULL; \
+ //                                            \
+ // public:                                    \
+ //  void NAME(void(*cb)());
 
-#define IMPLEMENT_EVENT(CLASS, WIDGET, NAME, LIBUI_FUN)              \
-  static void CLASS##_##NAME(WIDGET* w, void* data) {                \
-    nbind::cbFunction* cb = (nbind::cbFunction*)data;                \
-    (*cb)();                                                         \
-  }                                                                  \
-  void CLASS::NAME(nbind::cbFunction& cb) {                          \
-    NAME##Callback = new nbind::cbFunction(cb);                      \
-    LIBUI_FUN((WIDGET*)getHandle(), CLASS##_##NAME, NAME##Callback); \
-  }
+#define IMPLEMENT_EVENT(CLASS, WIDGET, NAME, LIBUI_FUN)              
+  // static void CLASS##_##NAME(WIDGET* w, void* data) {                \
+  //   nbind::cbFunction* cb = (nbind::cbFunction*)data;                \
+  //   (*cb)();                                                         \
+  // }                                                                  \
+  // void CLASS::NAME(void(*cb)()) {                          \
+  //   NAME##Callback = new nbind::cbFunction(cb);                      \
+  //   LIBUI_FUN((WIDGET*)getHandle(), CLASS##_##NAME, NAME##Callback); \
+  // }
 
 #define DEFINE_CONTROL_METHODS()     \
   void destroy();                    \
@@ -65,18 +66,18 @@
 
 #define DEFINE_ENTRY_METHODS()     \
   void setText(const char* text);  \
-  const char* getText();           \
+  std::string getText();           \
   void setReadOnly(bool readOnly); \
   bool getReadOnly();
 
 #define INHERITS_ENTRY_METHODS(CLASS)                                   \
   void CLASS::setText(const char* text) { UiEntryBase::setText(text); } \
-  const char* CLASS::getText() { return UiEntryBase::getText(); }       \
+  std::string CLASS::getText() { return UiEntryBase::getText(); }       \
   void CLASS::setReadOnly(bool readOnly) {                              \
     UiEntryBase::setReadOnly(readOnly);                                 \
   }                                                                     \
   bool CLASS::getReadOnly() { return UiEntryBase::getReadOnly(); }      \
-  void CLASS::onChanged(nbind::cbFunction& cb) { UiEntryBase::onChanged(cb); }
+  // void CLASS::onChanged(void(*cb)()) { UiEntryBase::onChanged(cb); }
 
 #define DECLARE_ENTRY_METHODS()     \
   getset(getText, setText);         \
@@ -118,91 +119,92 @@ class UiControl {
   DEFINE_CONTROL_METHODS()
 };
 
-class UiRadioButtons : public UiControl {
-  DEFINE_EVENT(onSelected)
+// class UiRadioButtons : public UiControl {
+//   DEFINE_EVENT(onSelected)
 
- public:
-  UiRadioButtons();
-  void append(const char* text);
-  int getSelected();
-  void setSelected(int n);
+//  public:
+//   UiRadioButtons();
+//   void append(const char* text);
+//   int getSelected();
+//   void setSelected(int n);
 
-  DEFINE_CONTROL_METHODS()
-};
+//   DEFINE_CONTROL_METHODS()
+// };
 
-class UiTab : public UiControl {
- public:
-  UiTab();
-  void append(const char* text, UiControl* child);
-  void insertAt(const char* name, int before, UiControl* child);
-  void deleteAt(int index);
-  int numPages();
-  bool getMargined(int page);
-  void setMargined(int page, bool margined);
+// class UiTab : public UiControl {
+//  public:
+//   UiTab();
+//   void append(const char* text, UiControl* child);
+//   void insertAt(const char* name, int before, UiControl* child);
+//   void deleteAt(int index);
+//   int numPages();
+//   bool getMargined(int page);
+//   void setMargined(int page, bool margined);
 
-  DEFINE_CONTROL_METHODS()
-};
+//   DEFINE_CONTROL_METHODS()
+// };
 
-class UiMultilineEntry : public UiControl {
-  DEFINE_EVENT(onChanged)
+// class UiMultilineEntry : public UiControl {
+//   DEFINE_EVENT(onChanged)
 
- public:
-  UiMultilineEntry();
-  DEFINE_CONTROL_METHODS()
-  void setText(const char* text);
-  const char* getText();
-  void setReadOnly(bool readOnly);
-  bool getReadOnly();
-  void append(const char* text);
-};
+//  public:
+//   UiMultilineEntry();
+//   DEFINE_CONTROL_METHODS()
+//   void setText(const char* text);
+//   const char* getText();
+//   void setReadOnly(bool readOnly);
+//   bool getReadOnly();
+//   void append(const char* text);
+// };
 
-class UiCombobox : public UiControl {
-  DEFINE_EVENT(onSelected)
+// class UiCombobox : public UiControl {
+//   DEFINE_EVENT(onSelected)
 
- public:
-  UiCombobox();
-  DEFINE_CONTROL_METHODS()
-  void append(const char* text);
-  int getSelected();
-  void setSelected(int n);
-};
+//  public:
+//   UiCombobox();
+//   DEFINE_CONTROL_METHODS()
+//   void append(const char* text);
+//   int getSelected();
+//   void setSelected(int n);
+// };
 
-class UiDateTimePicker : public UiControl {
- public:
-  UiDateTimePicker();
-  DEFINE_CONTROL_METHODS()
-};
+// class UiDateTimePicker : public UiControl {
+//  public:
+//   UiDateTimePicker();
+//   DEFINE_CONTROL_METHODS()
+// };
 
-class UiDatePicker : public UiControl {
- public:
-  UiDatePicker();
-  DEFINE_CONTROL_METHODS()
-};
+// class UiDatePicker : public UiControl {
+//  public:
+//   UiDatePicker();
+//   DEFINE_CONTROL_METHODS()
+// };
 
-class UiTimePicker : public UiControl {
- public:
-  UiTimePicker();
-  DEFINE_CONTROL_METHODS()
-};
+// class UiTimePicker : public UiControl {
+//  public:
+//   UiTimePicker();
+//   DEFINE_CONTROL_METHODS()
+// };
 
-class UiEditableCombobox : public UiControl {
-  DEFINE_EVENT(onChanged)
+// class UiEditableCombobox : public UiControl {
+//   DEFINE_EVENT(onChanged)
 
- public:
-  UiEditableCombobox();
-  DEFINE_CONTROL_METHODS()
-  void append(const char* text);
-  const char* getText();
-  void setText(const char* text);
-};
+//  public:
+//   UiEditableCombobox();
+//   DEFINE_CONTROL_METHODS()
+//   void append(const char* text);
+//   const char* getText();
+//   void setText(const char* text);
+// };
 
 class UiEntryBase : public UiControl {
-  DEFINE_EVENT(onChanged)
+  void (*onChangedCallback)();
 
  public:
   UiEntryBase(uiControl*);
   DEFINE_CONTROL_METHODS()
   DEFINE_ENTRY_METHODS()
+  void onChanged(void(*cb)());
 };
 
 class UiEntry : public UiEntryBase {
@@ -210,151 +212,151 @@ class UiEntry : public UiEntryBase {
   UiEntry();
   DEFINE_CONTROL_METHODS()
   DEFINE_ENTRY_METHODS()
-  void onChanged(nbind::cbFunction& cb);
 };
 
-class UiPasswordEntry : public UiEntryBase {
- public:
-  UiPasswordEntry();
-  DEFINE_CONTROL_METHODS()
-  DEFINE_ENTRY_METHODS()
-  void onChanged(nbind::cbFunction& cb);
-};
+// class UiPasswordEntry : public UiEntryBase {
+//  public:
+//   UiPasswordEntry();
+//   DEFINE_CONTROL_METHODS()
+//   DEFINE_ENTRY_METHODS()
+//   void onChanged(void(*cb)());
+// };
 
-class UiSearchEntry : public UiEntryBase {
- public:
-  UiSearchEntry();
-  DEFINE_CONTROL_METHODS()
-  DEFINE_ENTRY_METHODS()
-  void onChanged(nbind::cbFunction& cb);
-};
+// class UiSearchEntry : public UiEntryBase {
+//  public:
+//   UiSearchEntry();
+//   DEFINE_CONTROL_METHODS()
+//   DEFINE_ENTRY_METHODS()
+//   void onChanged(void(*cb)());
+// };
 
-class UiHorizontalSeparator : public UiControl {
- public:
-  UiHorizontalSeparator();
-  DEFINE_CONTROL_METHODS()
-};
+// class UiHorizontalSeparator : public UiControl {
+//  public:
+//   UiHorizontalSeparator();
+//   DEFINE_CONTROL_METHODS()
+// };
 
-class UiVerticalSeparator : public UiControl {
- public:
-  UiVerticalSeparator();
-  DEFINE_CONTROL_METHODS()
-};
+// class UiVerticalSeparator : public UiControl {
+//  public:
+//   UiVerticalSeparator();
+//   DEFINE_CONTROL_METHODS()
+// };
 
-class UiLabel : public UiControl {
- public:
-  UiLabel();
-  UiLabel(const char* text);
-  DEFINE_CONTROL_METHODS()
-  void setText(const char* text);
-  const char* getText();
-};
+// class UiLabel : public UiControl {
+//  public:
+//   UiLabel();
+//   UiLabel(const char* text);
+//   DEFINE_CONTROL_METHODS()
+//   void setText(const char* text);
+//   const char* getText();
+// };
 
-class UiGroup : public UiControl {
- public:
-  UiGroup(const char* text);
-  UiGroup();
-  void setChild(UiControl* control);
-  bool getMargined();
-  void setMargined(bool margined);
-  const char* getTitle();
-  void setTitle(const char* title);
-  DEFINE_CONTROL_METHODS()
-};
+// class UiGroup : public UiControl {
+//  public:
+//   UiGroup(const char* text);
+//   UiGroup();
+//   void setChild(UiControl* control);
+//   bool getMargined();
+//   void setMargined(bool margined);
+//   const char* getTitle();
+//   void setTitle(const char* title);
+//   DEFINE_CONTROL_METHODS()
+// };
 
-class UiButton : public UiControl {
-  DEFINE_EVENT(onClicked)
+// class UiButton : public UiControl {
+//   void (*onClicked)();
 
- public:
-  UiButton(const char* text);
-  UiButton();
-  DEFINE_CONTROL_METHODS()
-  void setText(const char* text);
-  const char* getText();
-};
+//  public:
+//   UiButton(const char* text);
+//   UiButton();
+//   DEFINE_CONTROL_METHODS()
+//   void onClicked(void (*cb)());
+//   void setText(const char* text);
+//   const char* getText();
 
-class UiCheckbox : public UiControl {
-  DEFINE_EVENT(onToggled)
+// };
 
- public:
-  UiCheckbox(const char* text);
-  UiCheckbox();
-  DEFINE_CONTROL_METHODS()
-  void setText(const char* text);
-  const char* getText();
-  void setChecked(bool checked);
-  bool getChecked();
-};
+// class UiCheckbox : public UiControl {
+//   DEFINE_EVENT(onToggled)
 
-class UiProgressBar : public UiControl {
- private:
-  int value = 0;
+//  public:
+//   UiCheckbox(const char* text);
+//   UiCheckbox();
+//   DEFINE_CONTROL_METHODS()
+//   void setText(const char* text);
+//   const char* getText();
+//   void setChecked(bool checked);
+//   bool getChecked();
+// };
 
- public:
-  UiProgressBar();
-  DEFINE_CONTROL_METHODS()
-  int getValue();
-  void setValue(int value);
-};
+// class UiProgressBar : public UiControl {
+//  private:
+//   int value = 0;
 
-class UiSlider : public UiControl {
-  DEFINE_EVENT(onChanged)
+//  public:
+//   UiProgressBar();
+//   DEFINE_CONTROL_METHODS()
+//   int getValue();
+//   void setValue(int value);
+// };
 
- public:
-  UiSlider(int min, int max);
-  UiSlider();
-  DEFINE_CONTROL_METHODS()
+// class UiSlider : public UiControl {
+//   DEFINE_EVENT(onChanged)
 
-  int getValue();
-  void setValue(int value);
-};
+//  public:
+//   UiSlider(int min, int max);
+//   UiSlider();
+//   DEFINE_CONTROL_METHODS()
 
-class UiSpinbox : public UiControl {
-  DEFINE_EVENT(onChanged)
+//   int getValue();
+//   void setValue(int value);
+// };
 
- public:
-  UiSpinbox(int min, int max);
-  UiSpinbox();
-  DEFINE_CONTROL_METHODS()
+// class UiSpinbox : public UiControl {
+//   DEFINE_EVENT(onChanged)
 
-  int getValue();
-  void setValue(int value);
-};
+//  public:
+//   UiSpinbox(int min, int max);
+//   UiSpinbox();
+//   DEFINE_CONTROL_METHODS()
 
-class UiBox : public UiControl {
- public:
-  UiBox(uiControl* hnd);
-  DEFINE_BOX_METHODS()
-};
+//   int getValue();
+//   void setValue(int value);
+// };
 
-class UiVerticalBox : public UiBox {
- public:
-  UiVerticalBox();
-  DEFINE_BOX_METHODS()
-  DEFINE_CONTROL_METHODS()
-};
+// class UiBox : public UiControl {
+//  public:
+//   UiBox(uiControl* hnd);
+//   DEFINE_BOX_METHODS()
+// };
 
-class UiHorizontalBox : public UiBox {
- public:
-  UiHorizontalBox();
-  DEFINE_BOX_METHODS()
-  DEFINE_CONTROL_METHODS()
-};
+// class UiVerticalBox : public UiBox {
+//  public:
+//   UiVerticalBox();
+//   DEFINE_BOX_METHODS()
+//   DEFINE_CONTROL_METHODS()
+// };
 
-class Point {
- private:
-  int x;
-  int y;
+// class UiHorizontalBox : public UiBox {
+//  public:
+//   UiHorizontalBox();
+//   DEFINE_BOX_METHODS()
+//   DEFINE_CONTROL_METHODS()
+// };
 
- public:
-  Point(const Point& other);
-  Point(int x, int y);
-  int getX();
-  void setX(int value);
-  int getY();
-  void setY(int value);
-  void toJS(nbind::cbOutput output);
-};
+// class Point {
+//  private:
+//   int x;
+//   int y;
+
+//  public:
+//   Point(const Point& other);
+//   Point(int x, int y);
+//   int getX();
+//   void setX(int value);
+//   int getY();
+//   void setY(int value);
+// };
 
 class Size {
  private:
@@ -367,41 +369,38 @@ class Size {
   void setWidth(int value);
   int getHeight();
   void setHeight(int value);
-  void toJS(nbind::cbOutput output);
 };
 
-class PointDouble {
- private:
-  double x;
-  double y;
+// class PointDouble {
+//  private:
+//   double x;
+//   double y;
 
- public:
-  PointDouble(double x, double y);
-  PointDouble(const PointDouble& other);
-  double getX();
-  void setX(double value);
-  double getY();
-  void setY(double value);
-  void toJS(nbind::cbOutput output);
-};
+//  public:
+//   PointDouble(double x, double y);
+//   PointDouble(const PointDouble& other);
+//   double getX();
+//   void setX(double value);
+//   double getY();
+//   void setY(double value);
+// };
 
-class SizeDouble {
- private:
-  double w;
-  double h;
+// class SizeDouble {
+//  private:
+//   double w;
+//   double h;
 
- public:
-  SizeDouble(double w, double h);
-  double getWidth();
-  void setWidth(double value);
-  double getHeight();
-  void setHeight(double value);
-  void toJS(nbind::cbOutput output);
-};
+//  public:
+//   SizeDouble(double w, double h);
+//   double getWidth();
+//   void setWidth(double value);
+//   double getHeight();
+//   void setHeight(double value);
+// };
 
 class UiWindow {
-  DEFINE_EVENT(onClosing)
-  DEFINE_EVENT(onContentSizeChanged)
+  // DEFINE_EVENT(onClosing)
+  // DEFINE_EVENT(onContentSizeChanged)
 
  private:
   uiWindow* win;
@@ -424,357 +423,352 @@ class UiWindow {
   void setContentSize(Size value);
 };
 
-class UiForm : public UiControl {
- public:
-  UiForm();
-  DEFINE_CONTROL_METHODS()
-  void append(const char* label, UiControl* c, bool stretchy);
-  void deleteAt(int index);
-  bool getPadded();
-  void setPadded(bool padded);
-};
+// class UiForm : public UiControl {
+//  public:
+//   UiForm();
+//   DEFINE_CONTROL_METHODS()
+//   void append(const char* label, UiControl* c, bool stretchy);
+//   void deleteAt(int index);
+//   bool getPadded();
+//   void setPadded(bool padded);
+// };
 
-// TODO - document
-class UiMenuItem {
-  DEFINE_EVENT(onClicked)
+// // TODO - document
+// class UiMenuItem {
+//   DEFINE_EVENT(onClicked)
 
- private:
-  uiMenuItem* handle;
+//  private:
+//   uiMenuItem* handle;
 
- public:
-  UiMenuItem(uiMenuItem* hnd);
-  void enable();
-  void disable();
-  bool getChecked();
-  void setChecked(bool checked);
-};
+//  public:
+//   UiMenuItem(uiMenuItem* hnd);
+//   void enable();
+//   void disable();
+//   bool getChecked();
+//   void setChecked(bool checked);
+// };
 
-// TODO - document
-class UiMenu {
- private:
-  uiMenu* handle;
+// // TODO - document
+// class UiMenu {
+//  private:
+//   uiMenu* handle;
 
- public:
-  UiMenu(const char* name);
-  UiMenuItem* appendItem(const char* name);
-  UiMenuItem* appendCheckItem(const char* name);
-  UiMenuItem* appendQuitItem();
-  UiMenuItem* appendPreferencesItem();
-  UiMenuItem* appendAboutItem();
-  void appendSeparator();
-};
+//  public:
+//   UiMenu(const char* name);
+//   UiMenuItem* appendItem(const char* name);
+//   UiMenuItem* appendCheckItem(const char* name);
+//   UiMenuItem* appendQuitItem();
+//   UiMenuItem* appendPreferencesItem();
+//   UiMenuItem* appendAboutItem();
+//   void appendSeparator();
+// };
 
-class Color {
- private:
-  double r;
-  double g;
-  double b;
-  double a;
+// class Color {
+//  private:
+//   double r;
+//   double g;
+//   double b;
+//   double a;
 
- public:
-  Color(const Color& other);
-  Color(double r, double g, double b, double a);
-  double getR();
-  void setR(double value);
-  double getG();
-  void setG(double value);
-  double getB();
-  void setB(double value);
-  double getA();
-  void setA(double value);
-  void toJS(nbind::cbOutput output);
-};
+//  public:
+//   Color(const Color& other);
+//   Color(double r, double g, double b, double a);
+//   double getR();
+//   void setR(double value);
+//   double getG();
+//   void setG(double value);
+//   double getB();
+//   void setB(double value);
+//   double getA();
+//   void setA(double value);
+// };
 
-class UiColorButton : public UiControl {
-  DEFINE_EVENT(onChanged)
+// class UiColorButton : public UiControl {
+//   DEFINE_EVENT(onChanged)
 
- public:
-  UiColorButton();
-  Color getColor();
-  void setColor(Color value);
-  DEFINE_CONTROL_METHODS()
-};
+//  public:
+//   UiColorButton();
+//   Color getColor();
+//   void setColor(Color value);
+//   DEFINE_CONTROL_METHODS()
+// };
 
-// UIArea
+// // UIArea
 
-class DrawStrokeParams {
- private:
-  uiDrawStrokeParams* sp;
+// class DrawStrokeParams {
+//  private:
+//   uiDrawStrokeParams* sp;
 
- public:
-  DrawStrokeParams();
-  int getCap();
-  int getJoin();
-  double getThickness();
-  double getMiterLimit();
-  std::vector<double> getDashes();
-  int getNumDashes();
-  double getDashPhase();
-  void setCap(int value);
-  void setJoin(int value);
-  void setThickness(double value);
-  void setMiterLimit(double value);
-  void setDashes(std::vector<double> value);
-  void setNumDashes(int value);
-  void setDashPhase(double value);
-  uiDrawStrokeParams* toStruct();
-  // void toJS(nbind::cbOutput output);
-};
-class UiDrawMatrix {
- private:
-  uiDrawMatrix* m;
+//  public:
+//   DrawStrokeParams();
+//   int getCap();
+//   int getJoin();
+//   double getThickness();
+//   double getMiterLimit();
+//   std::vector<double> getDashes();
+//   int getNumDashes();
+//   double getDashPhase();
+//   void setCap(int value);
+//   void setJoin(int value);
+//   void setThickness(double value);
+//   void setMiterLimit(double value);
+//   void setDashes(std::vector<double> value);
+//   void setNumDashes(int value);
+//   void setDashPhase(double value);
+//   uiDrawStrokeParams* toStruct();
+// };
+// class UiDrawMatrix {
+//  private:
+//   uiDrawMatrix* m;
 
- public:
-  UiDrawMatrix();
-  uiDrawMatrix* getStruct();
-  double getM11();
-  double getM12();
-  double getM21();
-  double getM22();
-  double getM31();
-  double getM32();
-  void setM11(double value);
-  void setM12(double value);
-  void setM21(double value);
-  void setM22(double value);
-  void setM31(double value);
-  void setM32(double value);
-  void setIdentity();
-  void translate(double x, double y);
-  void scale(double xCenter, double yCenter, double x, double y);
-  void rotate(double x, double y, double amount);
-  void skew(double x, double y, double xamount, double yamount);
-  void multiply(UiDrawMatrix* src);
-  int invertible();
-  int invert();
-  PointDouble transformPoint();
-  SizeDouble transformSize();
-};
+//  public:
+//   UiDrawMatrix();
+//   uiDrawMatrix* getStruct();
+//   double getM11();
+//   double getM12();
+//   double getM21();
+//   double getM22();
+//   double getM31();
+//   double getM32();
+//   void setM11(double value);
+//   void setM12(double value);
+//   void setM21(double value);
+//   void setM22(double value);
+//   void setM31(double value);
+//   void setM32(double value);
+//   void setIdentity();
+//   void translate(double x, double y);
+//   void scale(double xCenter, double yCenter, double x, double y);
+//   void rotate(double x, double y, double amount);
+//   void skew(double x, double y, double xamount, double yamount);
+//   void multiply(UiDrawMatrix* src);
+//   int invertible();
+//   int invert();
+//   PointDouble transformPoint();
+//   SizeDouble transformSize();
+// };
 
-class BrushGradientStop {
- private:
-  double p;
-  Color c;
+// class BrushGradientStop {
+//  private:
+//   double p;
+//   Color c;
 
- public:
-  BrushGradientStop(double pos, Color color);
-  Color getColor();
-  void setColor(Color value);
-  double getPos();
-  void setPos(double value);
-  void toJS(nbind::cbOutput output);
-};
+//  public:
+//   BrushGradientStop(double pos, Color color);
+//   Color getColor();
+//   void setColor(Color value);
+//   double getPos();
+//   void setPos(double value);
+// };
 
-class DrawBrush {
- private:
-  uiDrawBrush* b;
+// class DrawBrush {
+//  private:
+//   uiDrawBrush* b;
 
- public:
-  DrawBrush();
-  Color getColor();
-  void setColor(Color value);
-  Point getStart();
-  void setStart(Point value);
-  Point getEnd();
-  void setEnd(Point value);
-  int getType();
-  void setType(int value);
-  std::vector<BrushGradientStop> getStops();
-  void setStops(std::vector<BrushGradientStop> value);
-  uiDrawBrush* toStruct();
-};
+//  public:
+//   DrawBrush();
+//   Color getColor();
+//   void setColor(Color value);
+//   Point getStart();
+//   void setStart(Point value);
+//   Point getEnd();
+//   void setEnd(Point value);
+//   int getType();
+//   void setType(int value);
+//   std::vector<BrushGradientStop> getStops();
+//   void setStops(std::vector<BrushGradientStop> value);
+//   uiDrawBrush* toStruct();
+// };
 
-class UiAreaMouseEvent {
- private:
-  uiAreaMouseEvent* e;
+// class UiAreaMouseEvent {
+//  private:
+//   uiAreaMouseEvent* e;
 
- public:
-  UiAreaMouseEvent(uiAreaMouseEvent* event);
-  double getX();
-  double getY();
-  double getAreaWidth();
-  double getAreaHeight();
-  int getDown();
-  int getUp();
-  int getCount();
-  int getModifiers();
-  unsigned int getHeld1To64();
-};
+//  public:
+//   UiAreaMouseEvent(uiAreaMouseEvent* event);
+//   double getX();
+//   double getY();
+//   double getAreaWidth();
+//   double getAreaHeight();
+//   int getDown();
+//   int getUp();
+//   int getCount();
+//   int getModifiers();
+//   unsigned int getHeld1To64();
+// };
 
-class UiAreaKeyEvent {
- private:
-  uiAreaKeyEvent* e;
+// class UiAreaKeyEvent {
+//  private:
+//   uiAreaKeyEvent* e;
 
- public:
-  UiAreaKeyEvent(uiAreaKeyEvent* event);
-  char* getKey();
-  int getExtKey();
-  int getModifier();
-  int getModifiers();
-  int getUp();
-};
+//  public:
+//   UiAreaKeyEvent(uiAreaKeyEvent* event);
+//   char* getKey();
+//   int getExtKey();
+//   int getModifier();
+//   int getModifiers();
+//   int getUp();
+// };
 
-class UiDrawPath {
- private:
-  uiDrawPath* handle;
+// class UiDrawPath {
+//  private:
+//   uiDrawPath* handle;
 
- public:
-  uiDrawPath* getHandle();
-  UiDrawPath(int fillMode);
-  void freePath();
-  void newFigure(double x, double y);
-  void newFigureWithArc(double xCenter, double yCenter, double radius,
-                        double startAngle, double sweep, int negative);
-  void lineTo(double x, double y);
-  void arcTo(double xCenter, double yCenter, double radius, double startAngle,
-             double sweep, int negative);
-  void bezierTo(double c1x, double c1y, double c2x, double c2y, double endX,
-                double endY);
-  void closeFigure();
-  void addRectangle(double x, double y, double width, double height);
-  void end();
-};
+//  public:
+//   uiDrawPath* getHandle();
+//   UiDrawPath(int fillMode);
+//   void freePath();
+//   void newFigure(double x, double y);
+//   void newFigureWithArc(double xCenter, double yCenter, double radius,
+//                         double startAngle, double sweep, int negative);
+//   void lineTo(double x, double y);
+//   void arcTo(double xCenter, double yCenter, double radius, double startAngle,
+//              double sweep, int negative);
+//   void bezierTo(double c1x, double c1y, double c2x, double c2y, double endX,
+//                 double endY);
+//   void closeFigure();
+//   void addRectangle(double x, double y, double width, double height);
+//   void end();
+// };
 
-class DrawTextFontMetrics {
- private:
-  uiDrawTextFontMetrics* m;
+// class DrawTextFontMetrics {
+//  private:
+//   uiDrawTextFontMetrics* m;
 
- public:
-  DrawTextFontMetrics(uiDrawTextFontMetrics* metrics);
-  double getAscent();
-  double getDescent();
-  double getLeading();
-  double getUnderlinePos();
-  double getUnderlineThickness();
-};
+//  public:
+//   DrawTextFontMetrics(uiDrawTextFontMetrics* metrics);
+//   double getAscent();
+//   double getDescent();
+//   double getLeading();
+//   double getUnderlinePos();
+//   double getUnderlineThickness();
+// };
 
-class DrawTextFontDescriptor {
- private:
-  uiDrawTextFontDescriptor* d;
+// class DrawTextFontDescriptor {
+//  private:
+//   uiDrawTextFontDescriptor* d;
 
- public:
-  DrawTextFontDescriptor(uiDrawTextFontDescriptor* descr);
-  const char* getFamily();
-  double getSize();
-  int getWeight();
-  int getItalic();
-  int getStretch();
-};
+//  public:
+//   DrawTextFontDescriptor(uiDrawTextFontDescriptor* descr);
+//   const char* getFamily();
+//   double getSize();
+//   int getWeight();
+//   int getItalic();
+//   int getStretch();
+// };
 
-class DrawTextFont {
- private:
-  uiDrawTextFont* handle;
+// class DrawTextFont {
+//  private:
+//   uiDrawTextFont* handle;
 
- public:
-  DrawTextFont();
-  DrawTextFont(uiDrawTextFont* h);
+//  public:
+//   DrawTextFont();
+//   DrawTextFont(uiDrawTextFont* h);
 
-  uiDrawTextFont* getHandle();
-  void free();
-  DrawTextFontDescriptor* describe();
-  DrawTextFontMetrics* getMetrics();
+//   uiDrawTextFont* getHandle();
+//   void free();
+//   DrawTextFontDescriptor* describe();
+//   DrawTextFontMetrics* getMetrics();
 
-  static std::vector<char*> listFontFamilies();
-  void loadClosestFont(const char* family, double size, int weight, int italic,
-                       int stretch);
-};
+//   static std::vector<char*> listFontFamilies();
+//   void loadClosestFont(const char* family, double size, int weight, int italic,
+//                        int stretch);
+// };
 
-class UiFontButton : public UiControl {
-  DEFINE_EVENT(onChanged)
+// class UiFontButton : public UiControl {
+//   DEFINE_EVENT(onChanged)
 
- public:
-  UiFontButton();
-  DrawTextFont* getFont();
-  DEFINE_CONTROL_METHODS()
-};
+//  public:
+//   UiFontButton();
+//   DrawTextFont* getFont();
+//   DEFINE_CONTROL_METHODS()
+// };
 
-class DrawTextLayout {
- private:
-  uiDrawTextLayout* handle;
-  double w;
+// class DrawTextLayout {
+//  private:
+//   uiDrawTextLayout* handle;
+//   double w;
 
- public:
-  DrawTextLayout(const char* text, DrawTextFont* defaultFont, double width);
-  void free();
-  void setWidth(double value);
-  double getWidth();
-  SizeDouble getExtents();
-  uiDrawTextLayout* getHandle();
-  void setColor(int startChar, int endChar, Color color);
-};
+//  public:
+//   DrawTextLayout(const char* text, DrawTextFont* defaultFont, double width);
+//   void free();
+//   void setWidth(double value);
+//   double getWidth();
+//   SizeDouble getExtents();
+//   uiDrawTextLayout* getHandle();
+//   void setColor(int startChar, int endChar, Color color);
+// };
 
-class UiDrawContext {
- private:
-  uiDrawContext* c;
+// class UiDrawContext {
+//  private:
+//   uiDrawContext* c;
 
- public:
-  UiDrawContext(uiDrawContext* ctx);
-  void stroke(UiDrawPath* path, DrawBrush* b, DrawStrokeParams* p);
-  void fill(UiDrawPath* path, DrawBrush* b);
-  void transform(UiDrawMatrix* m);
-  void clip(UiDrawPath* path);
-  void save();
-  void restore();
-  void text(double x, double y, DrawTextLayout* layout);
-};
+//  public:
+//   UiDrawContext(uiDrawContext* ctx);
+//   void stroke(UiDrawPath* path, DrawBrush* b, DrawStrokeParams* p);
+//   void fill(UiDrawPath* path, DrawBrush* b);
+//   void transform(UiDrawMatrix* m);
+//   void clip(UiDrawPath* path);
+//   void save();
+//   void restore();
+//   void text(double x, double y, DrawTextLayout* layout);
+// };
 
-class UiAreaDrawParams {
- private:
-  uiAreaDrawParams* p;
+// class UiAreaDrawParams {
+//  private:
+//   uiAreaDrawParams* p;
 
- public:
-  UiAreaDrawParams(uiAreaDrawParams* params);
-  UiDrawContext* getContext();
-  double getAreaWidth();
-  double getAreaHeight();
-  double getClipX();
-  double getClipY();
-  double getClipWidth();
-  double getClipHeight();
-};
+//  public:
+//   UiAreaDrawParams(uiAreaDrawParams* params);
+//   UiDrawContext* getContext();
+//   double getAreaWidth();
+//   double getAreaHeight();
+//   double getClipX();
+//   double getClipY();
+//   double getClipWidth();
+//   double getClipHeight();
+// };
 
-// TODO - document
-class UiArea : public UiControl {
- public:
-  // Workaround for nbind bug solved in 0.3
-  UiArea(int dummy);
+// // TODO - document
+// class UiArea : public UiControl {
+//  public:
+//   // Workaround for nbind bug solved in 0.3
+//   UiArea(int dummy);
 
-  UiArea(nbind::cbFunction& drawCb, nbind::cbFunction& mouseEventCb,
-         nbind::cbFunction& mouseCrossedCb, nbind::cbFunction& dragBrokenCb,
-         nbind::cbFunction& keyEventCb);
-  UiArea(nbind::cbFunction& drawCb, nbind::cbFunction& mouseEventCb,
-         nbind::cbFunction& mouseCrossedCb, nbind::cbFunction& dragBrokenCb,
-         nbind::cbFunction& keyEventCb, int width, int height);
-  void setSize(int width, int height);
-  void queueRedrawAll();
-  void scrollTo(double x, double y, double width, double height);
-  DEFINE_CONTROL_METHODS()
-};
+//   UiArea(void(*drawCb)(UiArea*, UiAreaDrawParams*), void(*mouseEventCb)(UiArea*, UiAreaMouseEvent*),
+//          void(*mouseCrossedCb)(UiArea*, int), void(*dragBrokenCb)(UiArea*),
+//          int(*keyEventCb)(UiArea*, UiAreaKeyEvent*));
+//   UiArea(void(*drawCb)(UiArea*, UiAreaDrawParams*), void(*mouseEventCb)(UiArea*, UiAreaMouseEvent*),
+//          void(*mouseCrossedCb)(UiArea*, int), void(*dragBrokenCb)(UiArea*),
+//          int(*keyEventCb)(UiArea*, UiAreaKeyEvent*), int width, int height);
+//   void setSize(int width, int height);
+//   void queueRedrawAll();
+//   void scrollTo(double x, double y, double width, double height);
+//   DEFINE_CONTROL_METHODS()
+// };
 
-extern std::map<uiArea*, UiArea*> areasMap;
+// extern std::map<uiArea*, UiArea*> areasMap;
 
-typedef struct UiAreaHandler {
-  void (*Draw)(UiAreaHandler* self, uiArea* area, uiAreaDrawParams* params);
-  void (*MouseEvent)(UiAreaHandler* self, uiArea* area,
-                     uiAreaMouseEvent* event);
-  void (*MouseCrossed)(UiAreaHandler* self, uiArea* area, int left);
-  void (*DragBroken)(UiAreaHandler* self, uiArea* area);
-  int (*KeyEvent)(UiAreaHandler* self, uiArea* area, uiAreaKeyEvent* event);
+// typedef struct UiAreaHandler {
+//   void (*Draw)(UiAreaHandler* self, uiArea* area, UiAreaDrawParams* params);
+//   void (*MouseEvent)(UiAreaHandler* self, uiArea* area,
+//                      UiAreaMouseEvent* event);
+//   void (*MouseCrossed)(UiAreaHandler* self, uiArea* area, int left);
+//   void (*DragBroken)(UiAreaHandler* self, uiArea* area);
+//   int (*KeyEvent)(UiAreaHandler* self, uiArea* area, uiAreaKeyEvent* event);
 
-  nbind::cbFunction* draw;
-  nbind::cbFunction* mouseEvent;
-  nbind::cbFunction* mouseCrossed;
-  nbind::cbFunction* dragBroken;
-  nbind::cbFunction* keyEvent;
-} UiAreaHandler;
+//   void(*draw)(UiArea*, UiAreaDrawParams*);
+//   void(*mouseEvent)(UiArea*, UiAreaMouseEvent*);
+//    void(*mouseCrossed)(UiArea*, int);
+//    void(*dragBroken)(UiArea*);
+//    int(*keyEvent)(UiArea*, UiAreaKeyEvent*);
+// } UiAreaHandler;
 
-struct UiAreaHandlerFactory {
-  static UiAreaHandler* build(nbind::cbFunction& draw,
-                              nbind::cbFunction& mouseEvent,
-                              nbind::cbFunction& mouseCrossed,
-                              nbind::cbFunction& dragBroken,
-                              nbind::cbFunction& keyEvent);
-};
+// struct UiAreaHandlerFactory {
+//   static UiAreaHandler* build(void(*drawCb)(UiArea*, UiAreaDrawParams*), void(*mouseEventCb)(UiArea*, UiAreaMouseEvent*),
+//          void(*mouseCrossedCb)(UiArea*, int), void(*dragBrokenCb)(UiArea*),
+//          int(*keyEventCb)(UiArea*, UiAreaKeyEvent*));
+// };
 
 // TODO - document
 class UiGrid : public UiControl {
@@ -788,6 +782,29 @@ class UiGrid : public UiControl {
                 int hexpand, int halign, int vexpand, int valign);
 
   DEFINE_CONTROL_METHODS()
+};
+
+class Ui {
+  public:
+  static void main();
+
+  static void mainSteps();
+
+  static int mainStep(int wait);
+
+  // static void onShouldQuit(nbind::cbFunction & cb) {
+  //   // uiOnShouldQuit(onShouldQuit_cb, new nbind::cbFunction(cb));
+  // }
+
+  static void quit();
+
+  static void init();
+};
+
+class EventLoop {
+public:
+  static void start();
+  static void stop();
 };
 
 #endif

@@ -1,6 +1,4 @@
 #include "../ui.h"
-#include "nbind/api.h"
-#include "nbind/nbind.h"
 #include "ui-node.h"
 
 uiControl* UiControl::getHandle() {
@@ -47,6 +45,4 @@ void UiControl::setEnabled(bool enabled) {
   }
 }
 
-NBIND_CLASS(UiControl) {
-  DECLARE_CONTROL_METHODS()
-}
+

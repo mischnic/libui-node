@@ -1,6 +1,4 @@
 #include "../ui.h"
-#include "nbind/api.h"
-#include "nbind/nbind.h"
 #include "ui-node.h"
 
 UiSpinbox::UiSpinbox(int min, int max)
@@ -23,12 +21,4 @@ IMPLEMENT_EVENT(UiSpinbox, uiSpinbox, onChanged, uiSpinboxOnChanged)
 
 INHERITS_CONTROL_METHODS(UiSpinbox)
 
-NBIND_CLASS(UiSpinbox) {
-  construct<int, int>();
-  construct<>();
-  DECLARE_CHILD_CONTROL_METHODS()
-  getset(getValue, setValue);
-  method(getValue);
-  method(setValue);
-  method(onChanged);
-}
+

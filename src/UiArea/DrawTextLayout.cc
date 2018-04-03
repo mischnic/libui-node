@@ -1,6 +1,5 @@
 #include "../../ui.h"
 #include "../ui-node.h"
-#include "nbind/nbind.h"
 
 DrawTextLayout::DrawTextLayout(const char *text, DrawTextFont *defaultFont, double width) {
 	handle = uiDrawNewTextLayout(text, defaultFont->getHandle(), width);
@@ -48,13 +47,5 @@ void DrawTextLayout::setColor(int startChar, int endChar, Color color) {
 
 
 
-NBIND_CLASS(DrawTextLayout) {
-		construct<const char *, DrawTextFont *, double>();
-		method(free);
-		method(setWidth);
-		method(getWidth);
-		method(getExtents);
-		method(setColor);
-		getset(getWidth, setWidth);
-}
+
 

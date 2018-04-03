@@ -1,6 +1,4 @@
 #include "../ui.h"
-#include "nbind/api.h"
-#include "nbind/nbind.h"
 #include "ui-node.h"
 
 UiCombobox::UiCombobox() : UiControl((uiControl*)uiNewCombobox()) {}
@@ -24,12 +22,4 @@ void UiCombobox::setSelected(int n) {
   }
 }
 
-NBIND_CLASS(UiCombobox) {
-  construct<>();
-  DECLARE_CHILD_CONTROL_METHODS()
-  method(append);
-  getset(getSelected, setSelected);
-  method(getSelected);
-  method(setSelected);
-  method(onSelected);
-}
+

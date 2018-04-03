@@ -1,6 +1,5 @@
 #include "../../ui.h"
 #include "../ui-node.h"
-#include "nbind/nbind.h"
 
 DrawBrush::DrawBrush()
  {
@@ -59,22 +58,4 @@ void DrawBrush::setStops(std::vector<BrushGradientStop> value) {
 }
 
 
-NBIND_CLASS(DrawBrush) {
-  construct<>();
-  method(getStart);
-  method(setStart);
-  method(getColor);
-  method(setColor);
-  method(getEnd);
-  method(setEnd);
-  method(getType);
-  method(setType);
-  method(setStops);
-  method(getStops);
 
-  getset(getColor, setColor);
-  getset(getStart, setStart);
-  getset(getEnd, setEnd);
-  getset(getType, setType);
-  getset(getStops, setStops);
-}

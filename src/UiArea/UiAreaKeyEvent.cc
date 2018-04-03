@@ -1,7 +1,6 @@
 
 #include "../../ui.h"
 #include "../ui-node.h"
-#include "nbind/nbind.h"
 
 
 
@@ -33,11 +32,4 @@ int UiAreaKeyEvent::getUp() {
 	return e->Up;
 }
 
-NBIND_CLASS(UiAreaKeyEvent) {
-	construct<uiAreaKeyEvent *>();
-	method(getKey);
-	method(getExtKey);
-	method(getModifier);
-	method(getModifiers);
-	method(getUp);
-}
+

@@ -1,6 +1,5 @@
 #include "../ui.h"
 #include "ui-node.h"
-#include "nbind/nbind.h"
 
 
 
@@ -53,23 +52,5 @@ void Color::setA(double value) {
 	a = value;
 }
 
-void Color::toJS(nbind::cbOutput output) {
-	output(r, g, b, a);
-}
 
-NBIND_CLASS(Color) {
-  construct<double, double, double, double>();
-  method(getR);
-  method(setR);
-  method(getG);
-  method(setG);
-  method(getB);
-  method(setB);
-  method(getA);
-  method(setA);
 
-  getset(getR, setR);
-  getset(getG, setG);
-  getset(getB, setB);
-  getset(getA, setA);
-}

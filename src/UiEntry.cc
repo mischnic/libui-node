@@ -1,5 +1,4 @@
 #include "../ui.h"
-#include "nbind/api.h"
 #include "ui-node.h"
 
 UiEntryBase::UiEntryBase(uiControl* hnd) : UiControl(hnd) {}
@@ -11,8 +10,20 @@ void UiEntryBase::setText(const char* text) {
   }
 }
 
-const char* UiEntryBase::getText() {
-  return uiEntryText((uiEntry*)getHandle());
+std::string UiEntryBase::getText() {
+  char *src = uiEntryText((uiEntry*)getHandle());
+  std::string string(src);
+  uiFreeText(src);
+  return string;
+}
+
+static void UiEntryBase__call(uiEntry *e, void *data) {
+  (*((void (*)())data))();
+}
+
+void UiEntryBase::onChanged(void (*cb)()){
+  // onChangedCallback = cb;
+  uiEntryOnChanged((uiEntry*)getHandle(), UiEntryBase__call, (void*)cb);
 }
 
 void UiEntryBase::setReadOnly(bool readOnly) {
@@ -23,40 +34,28 @@ bool UiEntryBase::getReadOnly() {
   return uiEntryReadOnly((uiEntry*)getHandle());
 }
 
-IMPLEMENT_EVENT(UiEntryBase, uiEntry, onChanged, uiEntryOnChanged)
+// IMPLEMENT_EVENT(UiEntryBase, uiEntry, onChanged, uiEntryOnChanged)
 
 UiEntry::UiEntry() : UiEntryBase((uiControl*)uiNewEntry()) {}
 
 INHERITS_CONTROL_METHODS(UiEntry)
 INHERITS_ENTRY_METHODS(UiEntry)
 
-UiPasswordEntry::UiPasswordEntry()
-    : UiEntryBase((uiControl*)uiNewPasswordEntry()) {}
 
-INHERITS_CONTROL_METHODS(UiPasswordEntry)
-INHERITS_ENTRY_METHODS(UiPasswordEntry)
+// UiPasswordEntry::UiPasswordEntry()
+//     : UiEntryBase((uiControl*)uiNewPasswordEntry()) {}
 
-UiSearchEntry::UiSearchEntry() : UiEntryBase((uiControl*)uiNewSearchEntry()) {}
+// INHERITS_CONTROL_METHODS(UiPasswordEntry)
+// INHERITS_ENTRY_METHODS(UiPasswordEntry)
 
-INHERITS_CONTROL_METHODS(UiSearchEntry)
-INHERITS_ENTRY_METHODS(UiSearchEntry)
+// UiSearchEntry::UiSearchEntry() : UiEntryBase((uiControl*)uiNewSearchEntry()) {}
 
-#include "nbind/nbind.h"
+// INHERITS_CONTROL_METHODS(UiSearchEntry)
+// INHERITS_ENTRY_METHODS(UiSearchEntry)
 
-NBIND_CLASS(UiSearchEntry) {
-  construct<>();
-  DECLARE_CHILD_CONTROL_METHODS()
-  DECLARE_ENTRY_METHODS()
-}
 
-NBIND_CLASS(UiPasswordEntry) {
-  construct<>();
-  DECLARE_CHILD_CONTROL_METHODS()
-  DECLARE_ENTRY_METHODS()
-}
 
-NBIND_CLASS(UiEntry) {
-  construct<>();
-  DECLARE_CHILD_CONTROL_METHODS()
-  DECLARE_ENTRY_METHODS()
-}
+
+
+
+

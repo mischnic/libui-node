@@ -1,6 +1,5 @@
 #include "../../ui.h"
 #include "../ui-node.h"
-#include "nbind/nbind.h"
 
 std::map<uiArea*, UiArea*> areasMap;
 
@@ -18,11 +17,9 @@ void UiArea::scrollTo(double x, double y, double width, double height) {
   uiAreaScrollTo((uiArea*)getHandle(), x, y, width, height);
 }
 
-UiArea::UiArea(nbind::cbFunction& drawCb,
-               nbind::cbFunction& mouseEventCb,
-               nbind::cbFunction& mouseCrossedCb,
-               nbind::cbFunction& dragBrokenCb,
-               nbind::cbFunction& keyEventCb)
+UiArea::UiArea(void(*drawCb)(UiArea*, UiAreaDrawParams*), void(*mouseEventCb)(UiArea*, UiAreaMouseEvent*),
+         void(*mouseCrossedCb)(UiArea*, int), void(*dragBrokenCb)(UiArea*),
+         int(*keyEventCb)(UiArea*, UiAreaKeyEvent*))
     : UiControl((uiControl*)uiNewArea(
           (uiAreaHandler*)UiAreaHandlerFactory::build(drawCb,
                                                       mouseEventCb,
@@ -32,11 +29,9 @@ UiArea::UiArea(nbind::cbFunction& drawCb,
   areasMap[(uiArea*)getHandle()] = this;
 }
 
-UiArea::UiArea(nbind::cbFunction& drawCb,
-               nbind::cbFunction& mouseEventCb,
-               nbind::cbFunction& mouseCrossedCb,
-               nbind::cbFunction& dragBrokenCb,
-               nbind::cbFunction& keyEventCb,
+UiArea::UiArea(void(*drawCb)(UiArea*, UiAreaDrawParams*), void(*mouseEventCb)(UiArea*, UiAreaMouseEvent*),
+         void(*mouseCrossedCb)(UiArea*, int), void(*dragBrokenCb)(UiArea*),
+         int(*keyEventCb)(UiArea*, UiAreaKeyEvent*),
                int width,
                int height)
     : UiControl((uiControl*)uiNewScrollingArea(
@@ -53,16 +48,5 @@ UiArea::UiArea(nbind::cbFunction& drawCb,
 // Workaround for nbind bug solved in 0.3
 UiArea::UiArea(int dummy) : UiControl(NULL) {}
 
-#include "nbind/api.h"
 
-NBIND_CLASS(UiArea) {
-  construct<int>();
-  construct<nbind::cbFunction&, nbind::cbFunction&, nbind::cbFunction&,
-            nbind::cbFunction&, nbind::cbFunction&>();
-  construct<nbind::cbFunction&, nbind::cbFunction&, nbind::cbFunction&,
-            nbind::cbFunction&, nbind::cbFunction&, int, int>();
-  DECLARE_CHILD_CONTROL_METHODS()
-  method(setSize);
-  method(queueRedrawAll);
-  method(scrollTo);
-}
+

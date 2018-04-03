@@ -1,6 +1,4 @@
 #include "../ui.h"
-#include "nbind/api.h"
-#include "nbind/nbind.h"
 #include "ui-node.h"
 
 UiTab::UiTab() : UiControl((uiControl*)uiNewTab()) {}
@@ -31,13 +29,4 @@ void UiTab::setMargined(int page, bool margined) {
   uiTabSetMargined((uiTab*)getHandle(), page, margined);
 }
 
-NBIND_CLASS(UiTab) {
-  construct<>();
-  DECLARE_CHILD_CONTROL_METHODS()
-  method(append);
-  method(numPages);
-  method(deleteAt);
-  method(insertAt);
-  method(getMargined);
-  method(setMargined);
-}
+

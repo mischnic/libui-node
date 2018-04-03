@@ -1,6 +1,5 @@
 #include "../../ui.h"
 #include "../ui-node.h"
-#include "nbind/nbind.h"
 
 
 UiAreaDrawParams::UiAreaDrawParams(uiAreaDrawParams *params) {
@@ -39,13 +38,4 @@ double UiAreaDrawParams::getClipHeight() {
 }
 
 
-NBIND_CLASS(UiAreaDrawParams) {
-	construct<uiAreaDrawParams *>();
-	method(getContext);
-	method(getAreaWidth);
-	method(getAreaHeight);
-	method(getClipX);
-	method(getClipY);
-	method(getClipWidth);
-	method(getClipHeight);
-}
+

@@ -1,6 +1,4 @@
 #include "../ui.h"
-#include "nbind/api.h"
-#include "nbind/nbind.h"
 #include "ui-node.h"
 
 struct UiDialogs {
@@ -23,9 +21,4 @@ struct UiDialogs {
 
 };
 
-NBIND_CLASS(UiDialogs) {
-	method(openFile);
-	method(saveFile);
-	method(msgBox);
-	method(msgBoxError);
-}
+

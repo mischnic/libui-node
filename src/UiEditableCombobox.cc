@@ -1,6 +1,4 @@
 #include "../ui.h"
-#include "nbind/api.h"
-#include "nbind/nbind.h"
 #include "ui-node.h"
 
 UiEditableCombobox::UiEditableCombobox()
@@ -28,12 +26,4 @@ const char* UiEditableCombobox::getText() {
   return uiEditableComboboxText((uiEditableCombobox*)getHandle());
 }
 
-NBIND_CLASS(UiEditableCombobox) {
-  construct<>();
-  DECLARE_CHILD_CONTROL_METHODS()
-  method(append);
-  getset(getText, setText);
-  method(getText);
-  method(setText);
-  method(onChanged);
-}
+

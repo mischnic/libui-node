@@ -1,6 +1,5 @@
 #include "../../ui.h"
 #include "../ui-node.h"
-#include "nbind/nbind.h"
 
 
 
@@ -74,27 +73,4 @@ uiDrawStrokeParams * DrawStrokeParams::toStruct() {
 
 
 
-NBIND_CLASS(DrawStrokeParams) {
-	construct<>();
-	method(getCap);
-	method(getJoin);
-	method(getThickness);
-	method(getMiterLimit);
-	method(getDashes);
-	method(getNumDashes);
-	method(getDashPhase);
-	method(setCap);
-	method(setJoin);
-	method(setThickness);
-	method(setMiterLimit);
-	method(setDashes);
-	method(setNumDashes);
-	method(setDashPhase);
-	getset(getCap,setCap);
-	getset(getJoin,setJoin);
-	getset(getThickness,setThickness);
-	getset(getMiterLimit,setMiterLimit);
-	getset(getDashes,setDashes);
-	getset(getNumDashes,setNumDashes);
-	getset(getDashPhase,setDashPhase);
-}
+
